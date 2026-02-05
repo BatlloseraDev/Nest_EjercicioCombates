@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+  moduleFormat    = "cjs"
+}
+
+generator client2 {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma2"
+  moduleFormat    = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --------------------------------------
+// 1. USUARIOS Y ROLES (Seguridad)
+// --------------------------------------
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique @db.VarChar(100)
+  password  String   @db.VarChar(255) // Más largo para soportar Hash
+  nickname  String   @unique @db.VarChar(50)
+  
+  // Progreso del Usuario
+  level     Int      @default(1)
+  experience Int     @default(0)
+  wins      Int      @default(0)
+  losses    Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  roles           UserRole[]        // Relación explícita 
+  characters      UserCharacter[]   // Sus personajes
+  battlesAsPlayer BattleParticipant[] // Historial de partidas jugadas
+  battlesWon      Battle[]          @relation("WinnerUser") // Partidas que ganó
+}
+
+model Role {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique @db.VarChar(20) // ADMIN, USER
+
+  users       UserRole[]
+}
+
+// Tabla intermedia explícita para Roles 
+model UserRole {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  roleId    Int
+
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId]) // Evita que un usuario tenga el mismo rol dos veces
+}
+
+// --------------------------------------
+// 2. PERSONAJES 
+// --------------------------------------
+
+// La plantilla (Creada por ADMIN)
+model Character {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(50)
+  baseHp      Int      // Vida base
+  baseAttack  Int      // Ataque base
+  minLevel    Int      @default(1) // Nivel requerido de usuario para desbloquearlo
+  imageUrl    String?  @db.VarChar(255)
+
+  instances   UserCharacter[] // Referencia a todos los usuarios que tienen este pj
+}
+
+// La "Instancia" (El personaje en el inventario del usuario)
+model UserCharacter {
+  id          Int      @id @default(autoincrement())
+  
+  userId      Int
+  characterId Int
+  
+  // Progreso individual del personaje
+  level       Int      @default(1)
+  experience  Int      @default(0)
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  // Relación con las batallas: Un usuario usa su instancia específica en combate
+  battles   BattleParticipant[]
+}
+
+// --------------------------------------
+// 3. BATALLAS (Historial)
+// --------------------------------------
+
+model Battle {
+  id          Int       @id @default(autoincrement())
+  status      String    @default("PENDING") @db.VarChar(20) // PENDING, IN_PROGRESS, FINISHED
+  
+  winnerId    Int?      // Puede ser nulo si empata o aún no termina
+  winner      User?     @relation("WinnerUser", fields: [winnerId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  finishedAt  DateTime?
+
+  participants BattleParticipant[]
+}
+
+// Tabla intermedia que define quién jugó y Ccon qué personaje
+model BattleParticipant {
+  id              Int @id @default(autoincrement())
+  
+  battleId        Int
+  userId          Int
+  userCharacterId Int // El personaje específico que usó
+
+  battle        Battle        @relation(fields: [battleId], references: [id], onDelete: Cascade)
+  user          User          @relation(fields: [userId], references: [id])
+  characterUsed UserCharacter @relation(fields: [userCharacterId], references: [id])
+}
