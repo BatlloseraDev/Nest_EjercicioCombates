@@ -27,7 +27,7 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique @db.VarChar(100)
-  password  String   @db.VarChar(255) // Más largo para soportar Hash
+  password  String   @db.VarChar(255) 
   nickname  String   @unique @db.VarChar(50)
   
   // Progreso del Usuario
@@ -103,14 +103,21 @@ model UserCharacter {
 // 3. BATALLAS (Historial)
 // --------------------------------------
 
-model Battle {
-  id          Int       @id @default(autoincrement())
-  status      String    @default("PENDING") @db.VarChar(20) // PENDING, IN_PROGRESS, FINISHED
-  
-  winnerId    Int?      // Puede ser nulo si empata o aún no termina
-  winner      User?     @relation("WinnerUser", fields: [winnerId], references: [id])
+enum BattleStatus {
+  PENDING
+  IN_PROGRESS
+  FINISHED
+}
 
-  createdAt   DateTime  @default(now())
+
+model Battle {
+  id          Int           @id @default(autoincrement())
+  status      BattleStatus  @default(PENDING)
+  
+  winnerId    Int?          // Puede ser nulo si empata o aún no ha terminado
+  winner      User?         @relation("WinnerUser", fields: [winnerId], references: [id])
+
+  createdAt   DateTime      @default(now())
   finishedAt  DateTime?
 
   participants BattleParticipant[]
