@@ -13,18 +13,33 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     //como tengo que controlar la contraseña aqui tengo que meter codigo pero me encantaria hacer return
     //del create directamente
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    //const hashedPassword = await bcrypt.hash(createUserDto.password, 10);//si hago el hash en front aqui no tendria que hacerlo
     //TODO cuando tenga el Rol echo integrarlo aqui
+    const userRole = await this.prisma.role.findUnique({
+      where: {name: 'USER'}
+    })
+
+    if(!userRole){
+      throw new NotFoundException("El rol 'USER' no existe, Ejecuta los seeds ");
+    }
 
     try{
       const user = await this.prisma.user.create({
         data: {
           ...createUserDto,
-          password: hashedPassword,
-          //TODO integrar aqui el rol por defecto
+          roles:{
+            create: {
+              roleId: userRole.id
+            }
+          }
         },
+        include:{
+          roles:{
+            include: {role:true}
+          }
+        }
       });
-      return user;
+      return this.excludePassword(user);
     }catch(error){
       if(error.code === 'P2002'){
         throw new BadRequestException("El email o nickname ya existe");
