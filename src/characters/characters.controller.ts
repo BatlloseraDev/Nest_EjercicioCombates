@@ -6,7 +6,7 @@ import { UpdateCharacterDto } from './dto/update-character.dto';
 @Controller('characters')
 export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
-
+// controlar que aqui solo entre admin
   @Post()
   create(@Body() createCharacterDto: CreateCharacterDto) {
     return this.charactersService.create(createCharacterDto);

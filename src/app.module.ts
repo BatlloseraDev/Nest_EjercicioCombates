@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { CharactersModule } from './characters/characters.module';
 import { BattlesModule } from './battles/battles.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,8 +19,9 @@ import { BattlesModule } from './battles/battles.module';
     RolesModule,
     CharactersModule,
     BattlesModule,
+    AuthModule,
   ],
-  providers: [PrismaService],
+  providers: [],
 })
 export class AppModule {}
 // 24:43

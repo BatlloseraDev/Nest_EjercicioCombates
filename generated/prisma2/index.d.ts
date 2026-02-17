@@ -5040,6 +5040,7 @@ export namespace Prisma {
     baseHp: number | null
     baseAttack: number | null
     minLevel: number | null
+    special: number | null
   }
 
   export type CharacterSumAggregateOutputType = {
@@ -5047,6 +5048,7 @@ export namespace Prisma {
     baseHp: number | null
     baseAttack: number | null
     minLevel: number | null
+    special: number | null
   }
 
   export type CharacterMinAggregateOutputType = {
@@ -5055,6 +5057,7 @@ export namespace Prisma {
     baseHp: number | null
     baseAttack: number | null
     minLevel: number | null
+    special: number | null
     imageUrl: string | null
   }
 
@@ -5064,6 +5067,7 @@ export namespace Prisma {
     baseHp: number | null
     baseAttack: number | null
     minLevel: number | null
+    special: number | null
     imageUrl: string | null
   }
 
@@ -5073,6 +5077,7 @@ export namespace Prisma {
     baseHp: number
     baseAttack: number
     minLevel: number
+    special: number
     imageUrl: number
     _all: number
   }
@@ -5083,6 +5088,7 @@ export namespace Prisma {
     baseHp?: true
     baseAttack?: true
     minLevel?: true
+    special?: true
   }
 
   export type CharacterSumAggregateInputType = {
@@ -5090,6 +5096,7 @@ export namespace Prisma {
     baseHp?: true
     baseAttack?: true
     minLevel?: true
+    special?: true
   }
 
   export type CharacterMinAggregateInputType = {
@@ -5098,6 +5105,7 @@ export namespace Prisma {
     baseHp?: true
     baseAttack?: true
     minLevel?: true
+    special?: true
     imageUrl?: true
   }
 
@@ -5107,6 +5115,7 @@ export namespace Prisma {
     baseHp?: true
     baseAttack?: true
     minLevel?: true
+    special?: true
     imageUrl?: true
   }
 
@@ -5116,6 +5125,7 @@ export namespace Prisma {
     baseHp?: true
     baseAttack?: true
     minLevel?: true
+    special?: true
     imageUrl?: true
     _all?: true
   }
@@ -5212,6 +5222,7 @@ export namespace Prisma {
     baseHp: number
     baseAttack: number
     minLevel: number
+    special: number
     imageUrl: string | null
     _count: CharacterCountAggregateOutputType | null
     _avg: CharacterAvgAggregateOutputType | null
@@ -5240,6 +5251,7 @@ export namespace Prisma {
     baseHp?: boolean
     baseAttack?: boolean
     minLevel?: boolean
+    special?: boolean
     imageUrl?: boolean
     instances?: boolean | Character$instancesArgs<ExtArgs>
     _count?: boolean | CharacterCountOutputTypeDefaultArgs<ExtArgs>
@@ -5251,6 +5263,7 @@ export namespace Prisma {
     baseHp?: boolean
     baseAttack?: boolean
     minLevel?: boolean
+    special?: boolean
     imageUrl?: boolean
   }, ExtArgs["result"]["character"]>
 
@@ -5260,6 +5273,7 @@ export namespace Prisma {
     baseHp?: boolean
     baseAttack?: boolean
     minLevel?: boolean
+    special?: boolean
     imageUrl?: boolean
   }, ExtArgs["result"]["character"]>
 
@@ -5269,10 +5283,11 @@ export namespace Prisma {
     baseHp?: boolean
     baseAttack?: boolean
     minLevel?: boolean
+    special?: boolean
     imageUrl?: boolean
   }
 
-  export type CharacterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "baseHp" | "baseAttack" | "minLevel" | "imageUrl", ExtArgs["result"]["character"]>
+  export type CharacterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "baseHp" | "baseAttack" | "minLevel" | "special" | "imageUrl", ExtArgs["result"]["character"]>
   export type CharacterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     instances?: boolean | Character$instancesArgs<ExtArgs>
     _count?: boolean | CharacterCountOutputTypeDefaultArgs<ExtArgs>
@@ -5291,6 +5306,7 @@ export namespace Prisma {
       baseHp: number
       baseAttack: number
       minLevel: number
+      special: number
       imageUrl: string | null
     }, ExtArgs["result"]["character"]>
     composites: {}
@@ -5721,6 +5737,7 @@ export namespace Prisma {
     readonly baseHp: FieldRef<"Character", 'Int'>
     readonly baseAttack: FieldRef<"Character", 'Int'>
     readonly minLevel: FieldRef<"Character", 'Int'>
+    readonly special: FieldRef<"Character", 'Float'>
     readonly imageUrl: FieldRef<"Character", 'String'>
   }
     
@@ -9603,6 +9620,7 @@ export namespace Prisma {
     baseHp: 'baseHp',
     baseAttack: 'baseAttack',
     minLevel: 'minLevel',
+    special: 'special',
     imageUrl: 'imageUrl'
   };
 
@@ -9713,20 +9731,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'BattleStatus'
-   */
-  export type EnumBattleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BattleStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'BattleStatus[]'
-   */
-  export type ListEnumBattleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BattleStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -9737,6 +9741,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'BattleStatus'
+   */
+  export type EnumBattleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BattleStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'BattleStatus[]'
+   */
+  export type ListEnumBattleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BattleStatus[]'>
     
   /**
    * Deep Input Types
@@ -9936,6 +9954,7 @@ export namespace Prisma {
     baseHp?: IntFilter<"Character"> | number
     baseAttack?: IntFilter<"Character"> | number
     minLevel?: IntFilter<"Character"> | number
+    special?: FloatFilter<"Character"> | number
     imageUrl?: StringNullableFilter<"Character"> | string | null
     instances?: UserCharacterListRelationFilter
   }
@@ -9946,22 +9965,24 @@ export namespace Prisma {
     baseHp?: SortOrder
     baseAttack?: SortOrder
     minLevel?: SortOrder
+    special?: SortOrder
     imageUrl?: SortOrderInput | SortOrder
     instances?: UserCharacterOrderByRelationAggregateInput
   }
 
   export type CharacterWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    name?: string
     AND?: CharacterWhereInput | CharacterWhereInput[]
     OR?: CharacterWhereInput[]
     NOT?: CharacterWhereInput | CharacterWhereInput[]
-    name?: StringFilter<"Character"> | string
     baseHp?: IntFilter<"Character"> | number
     baseAttack?: IntFilter<"Character"> | number
     minLevel?: IntFilter<"Character"> | number
+    special?: FloatFilter<"Character"> | number
     imageUrl?: StringNullableFilter<"Character"> | string | null
     instances?: UserCharacterListRelationFilter
-  }, "id">
+  }, "id" | "name">
 
   export type CharacterOrderByWithAggregationInput = {
     id?: SortOrder
@@ -9969,6 +9990,7 @@ export namespace Prisma {
     baseHp?: SortOrder
     baseAttack?: SortOrder
     minLevel?: SortOrder
+    special?: SortOrder
     imageUrl?: SortOrderInput | SortOrder
     _count?: CharacterCountOrderByAggregateInput
     _avg?: CharacterAvgOrderByAggregateInput
@@ -9986,6 +10008,7 @@ export namespace Prisma {
     baseHp?: IntWithAggregatesFilter<"Character"> | number
     baseAttack?: IntWithAggregatesFilter<"Character"> | number
     minLevel?: IntWithAggregatesFilter<"Character"> | number
+    special?: FloatWithAggregatesFilter<"Character"> | number
     imageUrl?: StringNullableWithAggregatesFilter<"Character"> | string | null
   }
 
@@ -10353,6 +10376,7 @@ export namespace Prisma {
     baseHp: number
     baseAttack: number
     minLevel?: number
+    special?: number
     imageUrl?: string | null
     instances?: UserCharacterCreateNestedManyWithoutCharacterInput
   }
@@ -10363,6 +10387,7 @@ export namespace Prisma {
     baseHp: number
     baseAttack: number
     minLevel?: number
+    special?: number
     imageUrl?: string | null
     instances?: UserCharacterUncheckedCreateNestedManyWithoutCharacterInput
   }
@@ -10372,6 +10397,7 @@ export namespace Prisma {
     baseHp?: IntFieldUpdateOperationsInput | number
     baseAttack?: IntFieldUpdateOperationsInput | number
     minLevel?: IntFieldUpdateOperationsInput | number
+    special?: FloatFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     instances?: UserCharacterUpdateManyWithoutCharacterNestedInput
   }
@@ -10382,6 +10408,7 @@ export namespace Prisma {
     baseHp?: IntFieldUpdateOperationsInput | number
     baseAttack?: IntFieldUpdateOperationsInput | number
     minLevel?: IntFieldUpdateOperationsInput | number
+    special?: FloatFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     instances?: UserCharacterUncheckedUpdateManyWithoutCharacterNestedInput
   }
@@ -10392,6 +10419,7 @@ export namespace Prisma {
     baseHp: number
     baseAttack: number
     minLevel?: number
+    special?: number
     imageUrl?: string | null
   }
 
@@ -10400,6 +10428,7 @@ export namespace Prisma {
     baseHp?: IntFieldUpdateOperationsInput | number
     baseAttack?: IntFieldUpdateOperationsInput | number
     minLevel?: IntFieldUpdateOperationsInput | number
+    special?: FloatFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -10409,6 +10438,7 @@ export namespace Prisma {
     baseHp?: IntFieldUpdateOperationsInput | number
     baseAttack?: IntFieldUpdateOperationsInput | number
     minLevel?: IntFieldUpdateOperationsInput | number
+    special?: FloatFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -10815,6 +10845,17 @@ export namespace Prisma {
     roleId?: SortOrder
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -10841,6 +10882,7 @@ export namespace Prisma {
     baseHp?: SortOrder
     baseAttack?: SortOrder
     minLevel?: SortOrder
+    special?: SortOrder
     imageUrl?: SortOrder
   }
 
@@ -10849,6 +10891,7 @@ export namespace Prisma {
     baseHp?: SortOrder
     baseAttack?: SortOrder
     minLevel?: SortOrder
+    special?: SortOrder
   }
 
   export type CharacterMaxOrderByAggregateInput = {
@@ -10857,6 +10900,7 @@ export namespace Prisma {
     baseHp?: SortOrder
     baseAttack?: SortOrder
     minLevel?: SortOrder
+    special?: SortOrder
     imageUrl?: SortOrder
   }
 
@@ -10866,6 +10910,7 @@ export namespace Prisma {
     baseHp?: SortOrder
     baseAttack?: SortOrder
     minLevel?: SortOrder
+    special?: SortOrder
     imageUrl?: SortOrder
   }
 
@@ -10874,6 +10919,23 @@ export namespace Prisma {
     baseHp?: SortOrder
     baseAttack?: SortOrder
     minLevel?: SortOrder
+    special?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -11360,6 +11422,14 @@ export namespace Prisma {
     connect?: UserCharacterWhereUniqueInput | UserCharacterWhereUniqueInput[]
   }
 
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -11684,6 +11754,22 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -12207,6 +12293,7 @@ export namespace Prisma {
     baseHp: number
     baseAttack: number
     minLevel?: number
+    special?: number
     imageUrl?: string | null
   }
 
@@ -12216,6 +12303,7 @@ export namespace Prisma {
     baseHp: number
     baseAttack: number
     minLevel?: number
+    special?: number
     imageUrl?: string | null
   }
 
@@ -12303,6 +12391,7 @@ export namespace Prisma {
     baseHp?: IntFieldUpdateOperationsInput | number
     baseAttack?: IntFieldUpdateOperationsInput | number
     minLevel?: IntFieldUpdateOperationsInput | number
+    special?: FloatFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -12312,6 +12401,7 @@ export namespace Prisma {
     baseHp?: IntFieldUpdateOperationsInput | number
     baseAttack?: IntFieldUpdateOperationsInput | number
     minLevel?: IntFieldUpdateOperationsInput | number
+    special?: FloatFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 

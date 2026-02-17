@@ -150,6 +150,7 @@ exports.Prisma.CharacterScalarFieldEnum = {
   baseHp: 'baseHp',
   baseAttack: 'baseAttack',
   minLevel: 'minLevel',
+  special: 'special',
   imageUrl: 'imageUrl'
 };
 

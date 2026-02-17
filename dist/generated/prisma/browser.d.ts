@@ -1,0 +1,11 @@
+import * as Prisma from './internal/prismaNamespaceBrowser.js';
+export { Prisma };
+export * as $Enums from './enums.js';
+export * from './enums.js';
+export type User = Prisma.UserModel;
+export type Role = Prisma.RoleModel;
+export type UserRole = Prisma.UserRoleModel;
+export type Character = Prisma.CharacterModel;
+export type UserCharacter = Prisma.UserCharacterModel;
+export type Battle = Prisma.BattleModel;
+export type BattleParticipant = Prisma.BattleParticipantModel;

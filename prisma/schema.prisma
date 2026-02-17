@@ -72,10 +72,11 @@ model UserRole {
 // La plantilla (Creada por ADMIN)
 model Character {
   id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(50)
+  name        String   @unique @db.VarChar(50)
   baseHp      Int      // Vida base
   baseAttack  Int      // Ataque base
   minLevel    Int      @default(1) // Nivel requerido de usuario para desbloquearlo
+  special     Float    @default(0.25) // La especialidad del character, si me da tiempo lo cambio a un sistema de habilidades
   imageUrl    String?  @db.VarChar(255)
 
   instances   UserCharacter[] // Referencia a todos los usuarios que tienen este pj

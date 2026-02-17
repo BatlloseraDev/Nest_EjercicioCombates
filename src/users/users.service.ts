@@ -2,18 +2,20 @@ import { Injectable, NotFoundException, BadRequestException} from '@nestjs/commo
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { User} from './entities/user.entity'
 import * as bcrypt from 'bcrypt';
 
 
 @Injectable()
 export class UsersService {
 
-  constructor(private readonly prisma: PrismaService){}
+  constructor(
+    private readonly prisma: PrismaService
+  ){}
 
   async create(createUserDto: CreateUserDto) {
-    //como tengo que controlar la contraseña aqui tengo que meter codigo pero me encantaria hacer return
-    //del create directamente
-    //const hashedPassword = await bcrypt.hash(createUserDto.password, 10);//si hago el hash en front aqui no tendria que hacerlo
+    
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);//si hago el hash en front aqui no tendria que hacerlo
     //TODO cuando tenga el Rol echo integrarlo aqui
     const userRole = await this.prisma.role.findUnique({
       where: {name: 'USER'}
@@ -27,6 +29,7 @@ export class UsersService {
       const user = await this.prisma.user.create({
         data: {
           ...createUserDto,
+          password: hashedPassword,
           roles:{
             create: {
               roleId: userRole.id
@@ -91,9 +94,56 @@ export class UsersService {
     return this.prisma.user.delete({where: {id}});
   }
 
-  async assignCharacter(userId: number, characterId: number){
-    //TODO metodo para asignar characteres al usuario a la tabla pivote...
+  async findByEmail(email: string){
+    const user = await this.prisma.user.findUnique({
+      where: {email},
+      include:{
+        roles:{include: {role:true}},
+        characters:{include: {character:true}},
+        battlesWon: true
+      }
+    });
+    return user;
   }
+
+
+  async assignCharacter(userId: number, characterId: number){
+    const characterTemplate = await this.prisma.character.findUnique({where: {id: characterId}});
+    if(!characterTemplate){
+      throw new NotFoundException("El personaje no existe");
+    } 
+
+    const user = await this.findOne(userId);
+    if(user.level < characterTemplate.minLevel){
+      throw new Error("El nivel del usuario es menor al nivel del personaje")
+    }
+    const userCharacter = await this.prisma.userCharacter.findFirst({
+      where: {userId, characterId}
+    });
+    if(userCharacter){
+      throw new BadRequestException("El usuario ya tiene a dicho personaje");
+    }
+
+
+    return this.prisma.userCharacter.create({
+      data: {
+        userId: userId,
+        characterId: characterId,
+      },
+      include: {
+        character: true
+      }
+    });
+  }
+
+  async findMyCharacters(userId: number){
+    return this.prisma.userCharacter.findMany({
+      where: {userId},
+      include: {character: true}
+    });
+  }
+
+
 
   private excludePassword(user){
     const {password, ...result} = user;
