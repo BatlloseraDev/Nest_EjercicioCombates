@@ -1,20 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { BattlesService } from './battles.service';
 import { CreateBattleDto } from './dto/create-battle.dto';
 import { UpdateBattleDto } from './dto/update-battle.dto';
+import { JwtGuard } from 'src/auth/jwt/jwt.guard';
 
 @Controller('battles')
+@UseGuards(JwtGuard)
 export class BattlesController {
   constructor(private readonly battlesService: BattlesService) {}
 
   @Post()
-  create(@Body() createBattleDto: CreateBattleDto) {
-    return this.battlesService.create(createBattleDto);
+  create(@Request() req,@Body() createBattleDto: CreateBattleDto) {
+    return this.battlesService.create(req.user.id, createBattleDto);
   }
 
   @Get()
-  findAll() {
-    return this.battlesService.findAll();
+  findAll(@Request() req) {
+    return this.battlesService.findAllBattles(req.user.id);
   }
 
   @Get(':id')

@@ -10,6 +10,8 @@ exports.BattlesModule = void 0;
 const common_1 = require("@nestjs/common");
 const battles_service_1 = require("./battles.service");
 const battles_controller_1 = require("./battles.controller");
+const jwt_1 = require("@nestjs/jwt");
+const prisma_module_1 = require("../prisma/prisma.module");
 let BattlesModule = class BattlesModule {
 };
 exports.BattlesModule = BattlesModule;
@@ -17,6 +19,10 @@ exports.BattlesModule = BattlesModule = __decorate([
     (0, common_1.Module)({
         controllers: [battles_controller_1.BattlesController],
         providers: [battles_service_1.BattlesService],
+        imports: [
+            jwt_1.JwtModule, prisma_module_1.PrismaModule
+        ],
+        exports: [battles_service_1.BattlesService]
     })
 ], BattlesModule);
 //# sourceMappingURL=battles.module.js.map

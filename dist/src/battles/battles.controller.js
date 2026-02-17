@@ -17,16 +17,17 @@ const common_1 = require("@nestjs/common");
 const battles_service_1 = require("./battles.service");
 const create_battle_dto_1 = require("./dto/create-battle.dto");
 const update_battle_dto_1 = require("./dto/update-battle.dto");
+const jwt_guard_1 = require("../auth/jwt/jwt.guard");
 let BattlesController = class BattlesController {
     battlesService;
     constructor(battlesService) {
         this.battlesService = battlesService;
     }
-    create(createBattleDto) {
-        return this.battlesService.create(createBattleDto);
+    create(req, createBattleDto) {
+        return this.battlesService.create(req.user.id, createBattleDto);
     }
-    findAll() {
-        return this.battlesService.findAll();
+    findAll(req) {
+        return this.battlesService.findAllBattles(req.user.id);
     }
     findOne(id) {
         return this.battlesService.findOne(+id);
@@ -41,15 +42,17 @@ let BattlesController = class BattlesController {
 exports.BattlesController = BattlesController;
 __decorate([
     (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_battle_dto_1.CreateBattleDto]),
+    __metadata("design:paramtypes", [Object, create_battle_dto_1.CreateBattleDto]),
     __metadata("design:returntype", void 0)
 ], BattlesController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], BattlesController.prototype, "findAll", null);
 __decorate([
@@ -76,6 +79,7 @@ __decorate([
 ], BattlesController.prototype, "remove", null);
 exports.BattlesController = BattlesController = __decorate([
     (0, common_1.Controller)('battles'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
     __metadata("design:paramtypes", [battles_service_1.BattlesService])
 ], BattlesController);
 //# sourceMappingURL=battles.controller.js.map
