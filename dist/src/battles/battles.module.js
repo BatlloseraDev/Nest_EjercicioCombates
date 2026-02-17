@@ -12,15 +12,18 @@ const battles_service_1 = require("./battles.service");
 const battles_controller_1 = require("./battles.controller");
 const jwt_1 = require("@nestjs/jwt");
 const prisma_module_1 = require("../prisma/prisma.module");
+const battles_gateway_1 = require("./battles.gateway");
+const auth_module_1 = require("../auth/auth.module");
+const config_1 = require("@nestjs/config");
 let BattlesModule = class BattlesModule {
 };
 exports.BattlesModule = BattlesModule;
 exports.BattlesModule = BattlesModule = __decorate([
     (0, common_1.Module)({
         controllers: [battles_controller_1.BattlesController],
-        providers: [battles_service_1.BattlesService],
+        providers: [battles_service_1.BattlesService, battles_gateway_1.BattlesGateway, config_1.ConfigService],
         imports: [
-            jwt_1.JwtModule, prisma_module_1.PrismaModule
+            jwt_1.JwtModule, prisma_module_1.PrismaModule, auth_module_1.AuthModule
         ],
         exports: [battles_service_1.BattlesService]
     })

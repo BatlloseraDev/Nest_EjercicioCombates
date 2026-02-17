@@ -21,10 +21,10 @@ export declare class BattlesController {
                 };
             } & {
                 id: number;
-                userId: number;
-                characterId: number;
                 level: number;
                 experience: number;
+                userId: number;
+                characterId: number;
             };
         } & {
             id: number;
@@ -34,9 +34,9 @@ export declare class BattlesController {
         })[];
     } & {
         id: number;
+        createdAt: Date;
         status: import("../../generated/prisma/enums").BattleStatus;
         winnerId: number | null;
-        createdAt: Date;
         finishedAt: Date | null;
     }>;
     findAll(req: any): Promise<({
@@ -48,9 +48,9 @@ export declare class BattlesController {
         }[];
     } & {
         id: number;
+        createdAt: Date;
         status: import("../../generated/prisma/enums").BattleStatus;
         winnerId: number | null;
-        createdAt: Date;
         finishedAt: Date | null;
     })[]>;
     findOne(id: string): Promise<({
@@ -67,10 +67,10 @@ export declare class BattlesController {
                 };
             } & {
                 id: number;
-                userId: number;
-                characterId: number;
                 level: number;
                 experience: number;
+                userId: number;
+                characterId: number;
             };
         } & {
             id: number;
@@ -80,9 +80,9 @@ export declare class BattlesController {
         })[];
     } & {
         id: number;
+        createdAt: Date;
         status: import("../../generated/prisma/enums").BattleStatus;
         winnerId: number | null;
-        createdAt: Date;
         finishedAt: Date | null;
     }) | null>;
     update(id: string, updateBattleDto: UpdateBattleDto): Promise<string>;
