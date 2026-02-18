@@ -129,6 +129,7 @@ export class UsersService {
       data: {
         userId: userId,
         characterId: characterId,
+        currentHp: characterTemplate.baseHp,
       },
       include: {
         character: true

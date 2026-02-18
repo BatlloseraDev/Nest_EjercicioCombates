@@ -159,7 +159,8 @@ exports.Prisma.UserCharacterScalarFieldEnum = {
   userId: 'userId',
   characterId: 'characterId',
   level: 'level',
-  experience: 'experience'
+  experience: 'experience',
+  currentHp: 'currentHp'
 };
 
 exports.Prisma.BattleScalarFieldEnum = {

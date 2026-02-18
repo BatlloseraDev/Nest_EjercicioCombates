@@ -89,9 +89,11 @@ model UserCharacter {
   userId      Int
   characterId Int
   
+
   // Progreso individual del personaje
   level       Int      @default(1)
   experience  Int      @default(0)
+
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
