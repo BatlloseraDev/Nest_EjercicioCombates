@@ -7,12 +7,24 @@ import { JwtGuard } from 'src/auth/jwt/jwt.guard';
 @Controller('battles')
 @UseGuards(JwtGuard)
 export class BattlesController {
-  constructor(private readonly battlesService: BattlesService) {}
+  constructor(private readonly battlesService: BattlesService) { }
 
   @Post()
-  create(@Request() req,@Body() createBattleDto: CreateBattleDto) {
+  create(@Request() req, @Body() createBattleDto: CreateBattleDto) {
     return this.battlesService.create(req.user.id, createBattleDto);
   }
+
+  @Post(':id/join')
+  join(@Request() req, @Param('id') id: string, @Body() body: { characterId: number }) {
+    return this.battlesService.joinBattle(+id, req.user.id, body.characterId);
+  }
+
+  // Listar salas disponibles
+  @Get('pending')
+  findAllPending() {
+    return this.battlesService.findPendingBattle();
+  }
+
 
   @Get()
   findAll(@Request() req) {

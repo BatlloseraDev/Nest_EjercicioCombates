@@ -10,13 +10,17 @@ exports.CharactersModule = void 0;
 const common_1 = require("@nestjs/common");
 const characters_service_1 = require("./characters.service");
 const characters_controller_1 = require("./characters.controller");
+const prisma_module_1 = require("../prisma/prisma.module");
+const jwt_1 = require("@nestjs/jwt");
 let CharactersModule = class CharactersModule {
 };
 exports.CharactersModule = CharactersModule;
 exports.CharactersModule = CharactersModule = __decorate([
     (0, common_1.Module)({
+        imports: [prisma_module_1.PrismaModule, jwt_1.JwtModule],
         controllers: [characters_controller_1.CharactersController],
         providers: [characters_service_1.CharactersService],
+        exports: [characters_service_1.CharactersService]
     })
 ], CharactersModule);
 //# sourceMappingURL=characters.module.js.map

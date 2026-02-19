@@ -26,6 +26,12 @@ let BattlesController = class BattlesController {
     create(req, createBattleDto) {
         return this.battlesService.create(req.user.id, createBattleDto);
     }
+    join(req, id, body) {
+        return this.battlesService.joinBattle(+id, req.user.id, body.characterId);
+    }
+    findAllPending() {
+        return this.battlesService.findPendingBattle();
+    }
     findAll(req) {
         return this.battlesService.findAllBattles(req.user.id);
     }
@@ -48,6 +54,21 @@ __decorate([
     __metadata("design:paramtypes", [Object, create_battle_dto_1.CreateBattleDto]),
     __metadata("design:returntype", void 0)
 ], BattlesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)(':id/join'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:returntype", void 0)
+], BattlesController.prototype, "join", null);
+__decorate([
+    (0, common_1.Get)('pending'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], BattlesController.prototype, "findAllPending", null);
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Request)()),

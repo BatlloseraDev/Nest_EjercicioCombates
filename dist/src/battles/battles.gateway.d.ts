@@ -9,10 +9,11 @@ export declare class BattlesGateway implements OnGatewayConnection, OnGatewayDis
     constructor(jwtService: JwtService, battlesService: BattlesService);
     handleConnection(client: Socket): Promise<void>;
     handleDisconnect(client: any): void;
-    handleJoinBattle(client: Socket, battleId: number): Promise<{
-        event: string;
-        message: string;
-    } | undefined>;
-    handleStartBattle(client: Socket, data: any): Promise<void>;
+    handleJoinBattle(client: Socket, data: {
+        battleId: number;
+    }): Promise<void>;
+    handleAttack(client: Socket, data: {
+        battleId: number;
+    }): Promise<void>;
     handleMessage(client: any, payload: any): string;
 }

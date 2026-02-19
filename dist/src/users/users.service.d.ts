@@ -10,15 +10,15 @@ export declare class UsersService {
     update(id: number, updateUserDto: UpdateUserDto): Promise<any>;
     remove(id: number): Promise<{
         email: string;
-        nickname: string;
         password: string;
-        id: number;
+        nickname: string;
         level: number;
         experience: number;
         wins: number;
         losses: number;
         createdAt: Date;
         updatedAt: Date;
+        id: number;
     }>;
     findByEmail(email: string): Promise<({
         roles: ({
@@ -42,30 +42,31 @@ export declare class UsersService {
                 imageUrl: string | null;
             };
         } & {
-            id: number;
             level: number;
             experience: number;
+            id: number;
             userId: number;
             characterId: number;
+            currentHp: number;
         })[];
         battlesWon: {
-            id: number;
             createdAt: Date;
+            id: number;
             status: import("../../generated/prisma/enums").BattleStatus;
             winnerId: number | null;
             finishedAt: Date | null;
         }[];
     } & {
         email: string;
-        nickname: string;
         password: string;
-        id: number;
+        nickname: string;
         level: number;
         experience: number;
         wins: number;
         losses: number;
         createdAt: Date;
         updatedAt: Date;
+        id: number;
     }) | null>;
     assignCharacter(userId: number, characterId: number): Promise<{
         character: {
@@ -78,11 +79,12 @@ export declare class UsersService {
             imageUrl: string | null;
         };
     } & {
-        id: number;
         level: number;
         experience: number;
+        id: number;
         userId: number;
         characterId: number;
+        currentHp: number;
     }>;
     findMyCharacters(userId: number): Promise<({
         character: {
@@ -95,11 +97,36 @@ export declare class UsersService {
             imageUrl: string | null;
         };
     } & {
-        id: number;
         level: number;
         experience: number;
+        id: number;
         userId: number;
         characterId: number;
+        currentHp: number;
     })[]>;
+    registerBattleWin(userId: number, xpGained: number): Promise<{
+        email: string;
+        password: string;
+        nickname: string;
+        level: number;
+        experience: number;
+        wins: number;
+        losses: number;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
+    }>;
+    registerBattleLoss(userId: number): Promise<{
+        email: string;
+        password: string;
+        nickname: string;
+        level: number;
+        experience: number;
+        wins: number;
+        losses: number;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
+    }>;
     private excludePassword;
 }

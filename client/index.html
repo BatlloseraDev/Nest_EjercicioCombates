@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batalla Friki - El Juego</title>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <style>
+        :root {
+            --bg: #1a1a2e;
+            --panel: #16213e;
+            --primary: #e94560;
+            --text: #fff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .view {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--panel);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .active {
+            display: block;
+        }
+
+        h1,
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+
+        input,
+        select,
+        button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .arena {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .player-card {
+            background: #0f3460;
+            padding: 20px;
+            border-radius: 10px;
+            width: 40%;
+        }
+
+        .hp-bar-bg {
+            background: #333;
+            width: 100%;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .hp-bar-fill {
+            background: #4caf50;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        #log-box {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            height: 150px;
+            overflow-y: auto;
+            font-family: monospace;
+            margin-top: 20px;
+        }
+
+        .badge {
+            background: gold;
+            color: black;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="auth-view" class="view active">
+        <h1>Batalla Friki</h1>
+        <div class="grid">
+            <div>
+                <h2>Iniciar Sesión</h2>
+                <input type="email" id="login-email" placeholder="Email">
+                <input type="password" id="login-password" placeholder="Contraseña">
+                <button onclick="login()">Entrar</button>
+            </div>
+            <div>
+                <h2>Registro</h2>
+                <input type="text" id="reg-nickname" placeholder="Nickname">
+                <input type="email" id="reg-email" placeholder="Email">
+                <input type="password" id="reg-password" placeholder="Contraseña">
+                <button onclick="register()">Crear Cuenta</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboard-view" class="view">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Bienvenido, <span id="user-name"></span> <span id="user-role" class="badge"></span></h1>
+            <button onclick="logout()" style="width: auto; background: #555;">Salir</button>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Tus Estadísticas</h3>
+                <p>Nivel: <strong id="stat-level">1</strong></p>
+                <p>Experiencia: <strong id="stat-xp">0</strong>/100</p>
+                <p>Victorias: <strong id="stat-wins">0</strong> | Derrotas: <strong id="stat-losses">0</strong></p>
+            </div>
+
+            <div id="admin-panel" class="card" style="display: none; border-color: var(--primary);">
+                <h3 style="color: var(--primary)">Panel de Administrador</h3>
+                <input type="text" id="char-name" placeholder="Nombre del Personaje">
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="char-hp" placeholder="HP Base">
+                    <input type="number" id="char-atk" placeholder="Ataque Base">
+                </div>
+                <button onclick="createCharacter()">Crear Personaje</button>
+            </div>
+        </div>
+        <h2>Reclutar Personajes</h2>
+        <div class="card">
+            <p>Personajes disponibles en el mundo:</p>
+            <div id="character-shop" class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            </div>
+        </div>
+   
+
+        <h2>Jugar</h2>
+        <div class="card">
+            <label>Elige tu personaje:</label>
+            <select id="my-characters"></select>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="startBattle(true)">Luchar vs CPU</button>
+                <button onclick="startBattle(false)">Crear Sala PvP</button>
+            </div>
+        </div>
+
+        <h2>Salas Disponibles (PvP)</h2>
+        <div id="lobbies" class="grid">
+        </div>
+    </div>
+
+    <div id="battle-view" class="view">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Arena de Combate</h1>
+            <button onclick="leaveBattle()" style="width: auto; background: #555;">Huir / Volver</button>
+        </div>
+
+        <h3 id="battle-status" style="text-align: center;">Esperando oponente...</h3>
+
+        <div class="arena" id="arena-players" style="display: none;">
+            <div class="player-card">
+                <h2 id="p1-name">Jugador 1</h2>
+                <p id="p1-char">Personaje</p>
+                <p>HP: <span id="p1-hp-text">100/100</span></p>
+                <div class="hp-bar-bg">
+                    <div id="p1-hp-bar" class="hp-bar-fill"></div>
+                </div>
+            </div>
+
+            <h1 style="color: var(--primary)">VS</h1>
+
+            <div class="player-card">
+                <h2 id="p2-name">Jugador 2</h2>
+                <p id="p2-char">Personaje</p>
+                <p>HP: <span id="p2-hp-text">100/100</span></p>
+                <div class="hp-bar-bg">
+                    <div id="p2-hp-bar" class="hp-bar-fill" style="background: var(--primary)"></div>
+                </div>
+            </div>
+        </div>
+
+        <button id="btn-attack" onclick="attack()"
+            style="display: none; margin-top: 20px; font-size: 20px; padding: 15px;">⚔️ ATACAR ⚔️</button>
+
+        <div id="log-box"></div>
+    </div>
+
+    <script>
+        // --- CONFIGURACIÓN ---
+        const API_URL = 'http://localhost:3001/api';
+        const SOCKET_URL = 'http://localhost:3001';
+        let token = localStorage.getItem('token');
+        let currentUser = null;
+        let socket = null;
+        let currentBattleId = null;
+        let lobbyInterval = null;
+
+        // --- INICIALIZACIÓN ---
+        window.onload = () => {
+            if (token) loadDashboard();
+        };
+
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        async function apiCall(endpoint, method = 'GET', body = null) {
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
+            const options = { method, headers };
+            if (body) options.body = JSON.stringify(body);
+
+            const res = await fetch(`${API_URL}${endpoint}`, options);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Error en la petición');
+            return data;
+        }
+
+        // --- AUTENTICACIÓN ---
+        async function login() {
+            try {
+                const data = await apiCall('/auth/login', 'POST', {
+                    email: document.getElementById('login-email').value,
+                    password: document.getElementById('login-password').value
+                });
+                token = data.access_token;
+                localStorage.setItem('token', token);
+                loadDashboard();
+            } catch (e) { alert(e.message); }
+        }
+
+        async function register() {
+            try {
+                await apiCall('/users', 'POST', {
+                    nickname: document.getElementById('reg-nickname').value,
+                    email: document.getElementById('reg-email').value,
+                    password: document.getElementById('reg-password').value
+                });
+                alert('Registro exitoso. Ahora inicia sesión.');
+            } catch (e) { alert(e.message); }
+        }
+
+        function logout() {
+            token = null;
+            currentUser = null;
+            localStorage.removeItem('token');
+            if (socket) socket.disconnect();
+            if (lobbyInterval) clearInterval(lobbyInterval);
+            showView('auth-view');
+        }
+
+        // --- DASHBOARD ---
+        async function loadDashboard() {
+            try {
+                // Asumiendo que tienes un endpoint para ver el perfil. 
+                // Si no lo tienes, puedes decodificar el JWT (btoa) para sacar el ID y Rol
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                currentUser = payload;
+
+                document.getElementById('user-name').innerText = currentUser.nickname || currentUser.email;
+
+                // Verificar si es ADMIN
+                const isADMIN = currentUser.roles && currentUser.roles.includes('ADMIN');
+                if (isADMIN) {
+                    document.getElementById('user-role').innerText = 'ADMIN';
+                    document.getElementById('admin-panel').style.display = 'block';
+                }
+
+                showView('dashboard-view');
+
+                // Cargar datos (Necesitarás estos endpoints en tu backend)
+                fetchStats();
+                fetchUserCharacters();
+                fetchPendingLobbies();
+                loadAvailableCharacters();
+
+
+                // Refrescar salas cada 60 segundos
+                if (lobbyInterval) clearInterval(lobbyInterval);
+                lobbyInterval = setInterval(fetchPendingLobbies, 60000);
+
+            } catch (e) {
+                console.error("Error al cargar dashboard", e);
+                logout();
+            }
+        }
+
+        async function loadAvailableCharacters() {
+            try {
+                // Obtenemos todos los personajes (el endpoint findAll que ya tienes)
+                const characters = await apiCall('/characters');
+                console.log("Los cahracteres son: "+ characters)
+                const container = document.getElementById('character-shop');
+                
+                if (characters.length === 0) {
+                    container.innerHTML = '<p>El administrador aún no ha creado personajes.</p>';
+                    return;
+                }
+
+                container.innerHTML = characters.map(c => `
+                    <div style="background: #222; padding: 10px; border-radius: 5px; text-align: center; border: 1px solid #444;">
+                        <h4 style="margin: 0; color: var(--primary)">${c.name}</h4>
+                        <p style="font-size: 12px; margin: 5px 0;">HP: ${c.baseHp} | Atk: ${c.baseAttack}</p>
+                        <p style="font-size: 12px; margin: 5px 0; color: gold;">Nivel Req: ${c.minLevel}</p>
+                        <button onclick="acquireCharacter(${c.id})" style="padding: 5px; font-size: 14px;">Reclutar</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error("Error cargando personajes", error);
+            }
+        }
+
+        async function acquireCharacter(characterId) {
+            try {
+                await apiCall(`/users/me/characters/${characterId}`, 'POST');
+                alert('¡Personaje reclutado con éxito!');
+                
+                // Recargamos el inventario del usuario para que aparezca en el select de "Jugar"
+                fetchUserCharacters(); 
+            } catch (error) {
+                // Aquí saltarán los errores del backend (Nivel insuficiente, ya lo tienes, etc.)
+                alert(error.message); 
+            }
+        }
+
+        async function fetchStats() {
+            // Llama a tu endpoint de usuario para obtener nivel, exp, victorias...
+            // Ejemplo simulado:
+            // const data = await apiCall('/users/profile');
+            // document.getElementById('stat-level').innerText = data.level;
+        }
+
+        async function fetchUserCharacters() {
+            // Llama al endpoint que devuelve el inventario de personajes del usuario
+            // Simulamos que devuelve un array de { id (userCharacterId), character: { name } }
+            try {
+                // Cambia esto por tu endpoint real:
+                // const chars = await apiCall('/users/my-characters'); 
+
+                // MOCK PARA PRUEBAS UI:
+                // const chars = [{ id: 1, character: { name: 'Guerrero' } }];
+                const chars = await apiCall('/users/me/characters')
+                const select = document.getElementById('my-characters');
+                select.innerHTML = chars.map(c => `<option value="${c.id}">${c.character.name} (Lvl ${c.level || 1})</option>`).join('');
+            } catch (error) { console.log("Aún no hay endpoint de personajes del usuario"); }
+        }
+
+        // --- ADMIN ---
+        async function createCharacter() {
+            try {
+                await apiCall('/characters', 'POST', {
+                    name: document.getElementById('char-name').value,
+                    baseHp: parseInt(document.getElementById('char-hp').value),
+                    baseAttack: parseInt(document.getElementById('char-atk').value)
+                });
+                alert('Personaje creado!');
+            } catch (e) { alert(e.message); }
+        }
+
+        // --- SALAS Y MATCHMAKING ---
+        async function fetchPendingLobbies() {
+            try {
+                const battles = await apiCall('/battles/pending');
+                const container = document.getElementById('lobbies');
+                if (battles.length === 0) {
+                    container.innerHTML = '<p>No hay salas disponibles.</p>';
+                    return;
+                }
+
+                container.innerHTML = battles.map(b => `
+                    <div class="card">
+                        <h4>Sala #${b.id}</h4>
+                        <p>Creador: ${b.participants[0].user.nickname}</p>
+                        <button onclick="joinBattle(${b.id})" style="background: #4caf50;">Unirse</button>
+                    </div>
+                `).join('');
+            } catch (e) { console.error('Error buscando salas', e); }
+        }
+
+        async function startBattle(isPvE) {
+            const charId = document.getElementById('my-characters').value;
+            if (!charId) return alert("Selecciona un personaje primero");
+
+            try {
+                const body = { characterId: parseInt(charId) };
+                const res = await apiCall('/battles', 'POST', body);
+            
+                currentBattleId = res.battleId || res.id; // Depende de lo que devuelva tu API
+                enterArena(currentBattleId);
+            } catch (e) { alert(e.message); }
+        }
+
+        async function joinBattle(battleId) {
+            const charId = document.getElementById('my-characters').value;
+            if (!charId) return alert("Selecciona un personaje primero");
+
+            try {
+                await apiCall(`/battles/${battleId}/join`, 'POST', { characterId: parseInt(charId) });
+                currentBattleId = battleId;
+                enterArena(battleId);
+            } catch (e) { alert(e.message); }
+        }
+
+        // --- WEBSOCKETS Y ARENA ---
+        function enterArena(battleId) {
+            showView('battle-view');
+            document.getElementById('log-box').innerHTML = '';
+            document.getElementById('arena-players').style.display = 'none';
+            document.getElementById('btn-attack').style.display = 'none';
+            document.getElementById('battle-status').innerText = 'Conectando al servidor...';
+
+            // Conectar Socket
+            if (!socket) {
+                // Enviamos el token en los extraHeaders (funciona bien con el polling de Socket.io)
+                socket = io(SOCKET_URL, {
+                    // extraHeaders: {
+                    //     Authorization: `Bearer ${token}`
+                    // },
+                    // transports: ['websocket']
+                   auth: { token: token }
+                });
+
+                socket.on('connect', () => console.log('🟢 WS Conectado'));
+
+                socket.on('battle_wait', (data) => {
+                    document.getElementById('battle-status').innerText = data.message || 'Esperando oponente...';
+                });
+
+                socket.on('battle_update', (state) => updateBattleUI(state));
+
+                socket.on('battle_error', (err) => {
+                    alert('Error en batalla: ' + (err.message || err));
+                    leaveBattle();
+                });
+            }
+
+            // Una vez en la arena, emitimos para unirnos a la sala específica
+            // IMPORTANTE: Tu backend espera que enviemos un JSON con { battleId: X }
+            socket.emit('join_battle', { battleId: battleId });
+        }
+
+        function updateBattleUI(state) {
+            // El estado recibido desde tu backend (BattleState)
+            document.getElementById('battle-status').innerText = state.status === 'FINISHED' ? '¡COMBATE TERMINADO!' : '¡A PELEAR!';
+            document.getElementById('arena-players').style.display = 'flex';
+
+            // Logs
+            const logBox = document.getElementById('log-box');
+            logBox.innerHTML = state.logs.map(l => `<div>> ${l}</div>`).join('');
+            logBox.scrollTop = logBox.scrollHeight;
+
+            // Identificar quién soy yo y quién es el rival
+            const me = state.players.find(p => p.userId === currentUser.sub || p.userId === currentUser.id);
+            const opponent = state.players.find(p => p.userId !== (currentUser.sub || currentUser.id));
+
+            if (me) renderPlayer(1, me);
+            if (opponent) renderPlayer(2, opponent);
+
+            // Control del turno (Tu backend envía turnUserId o turnUserID dependiendo de cómo lo escribiste)
+            const isMyTurn = state.turnUserId === (currentUser.sub || currentUser.id);
+
+            const btn = document.getElementById('btn-attack');
+            if (state.status === 'IN_PROGRESS') {
+                btn.style.display = 'block';
+                btn.disabled = !isMyTurn;
+                btn.innerText = isMyTurn ? '⚔️ ES TU TURNO: ATACAR ⚔️' : 'Esperando turno del rival...';
+                btn.style.background = isMyTurn ? 'var(--primary)' : '#555';
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        function renderPlayer(slot, player) {
+            document.getElementById(`p${slot}-name`).innerText = player.nickname;
+            document.getElementById(`p${slot}-char`).innerText = player.characterName;
+            document.getElementById(`p${slot}-hp-text`).innerText = `${player.currentHp} / ${player.maxHp}`;
+
+            const pct = Math.max(0, (player.currentHp / player.maxHp) * 100);
+            const bar = document.getElementById(`p${slot}-hp-bar`);
+            bar.style.width = `${pct}%`;
+
+            // Cambiar color si tiene poca vida
+            if (pct < 25) bar.style.background = 'red';
+            else if (pct < 50) bar.style.background = 'orange';
+            else bar.style.background = slot === 1 ? '#4caf50' : 'var(--primary)';
+        }
+
+        function attack() {
+            // IMPORTANTE: Tu backend espera que enviemos un JSON con { battleId: X }
+            socket.emit('attack', { battleId: currentBattleId });
+        }
+
+        function leaveBattle() {
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+            }
+            currentBattleId = null;
+            loadDashboard();
+        }
+    </script>
+</body>
+
+</html>

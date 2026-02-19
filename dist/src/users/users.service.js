@@ -132,35 +132,80 @@ let UsersService = class UsersService {
         return user;
     }
     async assignCharacter(userId, characterId) {
-        const characterTemplate = await this.prisma.character.findUnique({ where: { id: characterId } });
-        if (!characterTemplate) {
-            throw new common_1.NotFoundException("El personaje no existe");
-        }
-        const user = await this.findOne(userId);
-        if (user.level < characterTemplate.minLevel) {
-            throw new Error("El nivel del usuario es menor al nivel del personaje");
-        }
-        const userCharacter = await this.prisma.userCharacter.findFirst({
-            where: { userId, characterId }
-        });
-        if (userCharacter) {
-            throw new common_1.BadRequestException("El usuario ya tiene a dicho personaje");
-        }
-        return this.prisma.userCharacter.create({
-            data: {
-                userId: userId,
-                characterId: characterId,
-            },
-            include: {
-                character: true
+        try {
+            const characterTemplate = await this.prisma.character.findUnique({ where: { id: characterId } });
+            if (!characterTemplate) {
+                throw new common_1.NotFoundException("El personaje no existe");
             }
-        });
+            const user = await this.findOne(userId);
+            if (user.level < characterTemplate.minLevel) {
+                throw new Error("El nivel del usuario es menor al nivel del personaje");
+            }
+            const userCharacter = await this.prisma.userCharacter.findFirst({
+                where: { userId, characterId }
+            });
+            if (userCharacter) {
+                throw new common_1.BadRequestException("El usuario ya tiene a dicho personaje");
+            }
+            return this.prisma.userCharacter.create({
+                data: {
+                    userId: userId,
+                    characterId: characterId,
+                    currentHp: characterTemplate.baseHp,
+                },
+                include: {
+                    character: true
+                }
+            });
+        }
+        catch (error) {
+            console.log(error);
+            throw error;
+        }
     }
     async findMyCharacters(userId) {
         return this.prisma.userCharacter.findMany({
             where: { userId },
             include: { character: true }
         });
+    }
+    async registerBattleWin(userId, xpGained) {
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                experience: true,
+                level: true
+            }
+        });
+        if (!user)
+            throw new common_1.NotFoundException("Error al subir de experiencia: El usuario no existe");
+        const totalXp = user.experience + xpGained;
+        const levelToGain = Math.floor(totalXp / 100);
+        const remainingXp = totalXp % 100;
+        const infoUpdated = await this.prisma.user.update({
+            where: { id: userId },
+            data: {
+                experience: remainingXp,
+                level: {
+                    increment: levelToGain
+                },
+                wins: {
+                    increment: 1
+                }
+            }
+        });
+        return infoUpdated;
+    }
+    async registerBattleLoss(userId) {
+        const infoUpdated = await this.prisma.user.update({
+            where: { id: userId },
+            data: {
+                losses: {
+                    increment: 1
+                }
+            }
+        });
+        return infoUpdated;
     }
     excludePassword(user) {
         const { password, ...result } = user;

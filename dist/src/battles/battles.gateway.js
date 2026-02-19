@@ -29,7 +29,8 @@ let BattlesGateway = class BattlesGateway {
     }
     async handleConnection(client) {
         try {
-            const token = client.handshake.headers.authorization?.split(' ')[1];
+            const token = client.handshake.auth?.token || client.handshake.headers.authorization?.split(' ')[1];
+            console.log(token);
             if (!token) {
                 throw new Error('Token no encontrado');
             }
@@ -47,24 +48,44 @@ let BattlesGateway = class BattlesGateway {
     handleDisconnect(client) {
         console.log(`🔴Cliente desconectado: ${client.data.user.email} (${client.id})`);
     }
-    async handleJoinBattle(client, battleId) {
+    async handleJoinBattle(client, data) {
         try {
-            const battle = await this.battlesService.findOne(+battleId);
-            if (!battle) {
+            const user = client.data.user;
+            const roomId = `battle_${data.battleId}`;
+            await client.join(roomId);
+            const battleState = await this.battlesService.initializeBattleState(+data.battleId);
+            if (!battleState) {
                 throw new Error('Batalla no encontrada');
             }
-            console.log("los datos del usuario son: ", client.data.user);
-            const roomId = `battle_${battleId}`;
-            client.join(roomId);
-            this.io.to(roomId).emit('battle_log', `El usuario ${client.data.user.nickname} se ha unido a la batalla ${battleId}`);
-            return { event: 'joined', message: `Te has unido a la batalla: ${battleId}` };
+            if (battleState.isPvE) {
+                this.io.to(roomId).emit('battle_update', battleState);
+            }
+            else {
+                const sockets = await this.io.in(roomId).fetchSockets();
+                if (sockets.length == 2) {
+                    this.io.to(roomId).emit('battle_update', battleState);
+                }
+                else {
+                    client.emit('battle_wait', { message: 'Esperando a que entre un oponente' });
+                }
+            }
         }
         catch (error) {
             console.log('Error al unirse a la batalla: ', error.message);
             client.emit('battle_error', error.message);
         }
     }
-    async handleStartBattle(client, data) {
+    async handleAttack(client, data) {
+        try {
+            const user = client.data.user;
+            const roomId = `battle_${data.battleId}`;
+            const newState = await this.battlesService.processTurn(+data.battleId, user.sub);
+            this.io.to(roomId).emit('battle_update', newState);
+        }
+        catch (error) {
+            console.log('Error al atacar: ', error.message);
+            client.emit('battle_error', error.message);
+        }
     }
     handleMessage(client, payload) {
         return 'Hello world!';
@@ -80,17 +101,17 @@ __decorate([
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __param(1, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [socket_io_1.Socket, Number]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], BattlesGateway.prototype, "handleJoinBattle", null);
 __decorate([
-    (0, websockets_1.SubscribeMessage)('start_battle'),
+    (0, websockets_1.SubscribeMessage)('attack'),
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __param(1, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
-], BattlesGateway.prototype, "handleStartBattle", null);
+], BattlesGateway.prototype, "handleAttack", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('message'),
     __metadata("design:type", Function),

@@ -20,11 +20,12 @@ export declare class BattlesController {
                     imageUrl: string | null;
                 };
             } & {
-                id: number;
                 level: number;
                 experience: number;
+                id: number;
                 userId: number;
                 characterId: number;
+                currentHp: number;
             };
         } & {
             id: number;
@@ -33,12 +34,35 @@ export declare class BattlesController {
             battleId: number;
         })[];
     } & {
-        id: number;
         createdAt: Date;
+        id: number;
         status: import("../../generated/prisma/enums").BattleStatus;
         winnerId: number | null;
         finishedAt: Date | null;
     }>;
+    join(req: any, id: string, body: {
+        characterId: number;
+    }): Promise<{
+        message: string;
+    }>;
+    findAllPending(): Promise<({
+        participants: ({
+            user: {
+                nickname: string;
+            };
+        } & {
+            id: number;
+            userId: number;
+            userCharacterId: number;
+            battleId: number;
+        })[];
+    } & {
+        createdAt: Date;
+        id: number;
+        status: import("../../generated/prisma/enums").BattleStatus;
+        winnerId: number | null;
+        finishedAt: Date | null;
+    })[]>;
     findAll(req: any): Promise<({
         participants: {
             id: number;
@@ -47,8 +71,8 @@ export declare class BattlesController {
             battleId: number;
         }[];
     } & {
-        id: number;
         createdAt: Date;
+        id: number;
         status: import("../../generated/prisma/enums").BattleStatus;
         winnerId: number | null;
         finishedAt: Date | null;
@@ -66,11 +90,12 @@ export declare class BattlesController {
                     imageUrl: string | null;
                 };
             } & {
-                id: number;
                 level: number;
                 experience: number;
+                id: number;
                 userId: number;
                 characterId: number;
+                currentHp: number;
             };
         } & {
             id: number;
@@ -79,8 +104,8 @@ export declare class BattlesController {
             battleId: number;
         })[];
     } & {
-        id: number;
         createdAt: Date;
+        id: number;
         status: import("../../generated/prisma/enums").BattleStatus;
         winnerId: number | null;
         finishedAt: Date | null;

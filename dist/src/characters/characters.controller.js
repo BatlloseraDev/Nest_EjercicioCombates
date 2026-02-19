@@ -17,6 +17,9 @@ const common_1 = require("@nestjs/common");
 const characters_service_1 = require("./characters.service");
 const create_character_dto_1 = require("./dto/create-character.dto");
 const update_character_dto_1 = require("./dto/update-character.dto");
+const jwt_guard_1 = require("../auth/jwt/jwt.guard");
+const roles_guard_1 = require("../auth/roles/roles.guard");
+const roles_decorator_1 = require("../auth/roles/roles.decorator");
 let CharactersController = class CharactersController {
     charactersService;
     constructor(charactersService) {
@@ -40,6 +43,8 @@ let CharactersController = class CharactersController {
 };
 exports.CharactersController = CharactersController;
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -60,6 +65,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], CharactersController.prototype, "findOne", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -68,6 +75,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], CharactersController.prototype, "update", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
