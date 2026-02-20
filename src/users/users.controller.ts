@@ -25,6 +25,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtGuard)
+  @Roles('ADMIN')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
@@ -55,5 +56,10 @@ export class UsersController {
     return this.usersService.findMyCharacters(userId);
   }
 
-
+  @UseGuards(JwtGuard)
+  @Get('me/profile')
+  async findMe(@Request() req){
+    const userId = req.user.id;
+    return this.usersService.findOne(userId);
+  }
 }

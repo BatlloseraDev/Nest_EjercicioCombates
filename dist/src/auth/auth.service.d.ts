@@ -26,29 +26,29 @@ export declare class AuthService {
                 imageUrl: string | null;
             };
         } & {
+            id: number;
             level: number;
             experience: number;
-            id: number;
             userId: number;
             characterId: number;
             currentHp: number;
         })[];
         battlesWon: {
-            createdAt: Date;
             id: number;
+            createdAt: Date;
             status: import("../../generated/prisma/enums").BattleStatus;
             winnerId: number | null;
             finishedAt: Date | null;
         }[];
         email: string;
         nickname: string;
+        id: number;
         level: number;
         experience: number;
         wins: number;
         losses: number;
         createdAt: Date;
         updatedAt: Date;
-        id: number;
     }>;
     login(user: any): Promise<{
         access_token: string;

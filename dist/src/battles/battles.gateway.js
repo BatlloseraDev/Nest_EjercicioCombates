@@ -30,7 +30,6 @@ let BattlesGateway = class BattlesGateway {
     async handleConnection(client) {
         try {
             const token = client.handshake.auth?.token || client.handshake.headers.authorization?.split(' ')[1];
-            console.log(token);
             if (!token) {
                 throw new Error('Token no encontrado');
             }

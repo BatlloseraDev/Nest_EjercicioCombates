@@ -11,6 +11,7 @@ export class BattlesController {
 
   @Post()
   create(@Request() req, @Body() createBattleDto: CreateBattleDto) {
+
     return this.battlesService.create(req.user.id, createBattleDto);
   }
 

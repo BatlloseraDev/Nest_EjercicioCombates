@@ -184,7 +184,8 @@ let BattlesService = class BattlesService {
             throw new Error('Jugadores no encontrados, fallo en el proceso de turno');
         }
         const damage = attacker.attack;
-        defender.currentHp -= Math.max(0, defender.currentHp - damage);
+        console.log(`El daño procesado por ${attacker.nickname} es ${damage}`);
+        defender.currentHp = Math.max(0, defender.currentHp - damage);
         state.logs.push(`${attacker.nickname} hizo ${damage} de daño a ${defender.nickname}`);
         if (defender.currentHp <= 0) {
             state.status = 'FINISHED';
@@ -206,7 +207,7 @@ let BattlesService = class BattlesService {
             throw new Error('Error en el turno de la CPU, CPU o jugador no encontrados');
         }
         const damage = cpu.attack;
-        player.currentHp -= Math.max(0, player.currentHp - damage);
+        player.currentHp = Math.max(0, player.currentHp - damage);
         state.logs.push(`CPU hizo ${damage} de daño a ${player.nickname}`);
         if (player.currentHp <= 0) {
             state.status = 'FINISHED';
@@ -236,10 +237,10 @@ let BattlesService = class BattlesService {
         });
         for (const participant of participants) {
             if (participant.userId === winnerId) {
-                await this.charactersService.addExperienceToUserCharacter(participant.userCharacterId, 10);
+                await this.charactersService.addExperienceToUserCharacter(participant.userCharacterId, 25);
             }
             else if (participant.userId === loserId) {
-                await this.charactersService.addExperienceToUserCharacter(participant.userCharacterId, 5);
+                await this.charactersService.addExperienceToUserCharacter(participant.userCharacterId, 10);
             }
         }
     }

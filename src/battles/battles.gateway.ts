@@ -19,7 +19,6 @@ export class BattlesGateway implements OnGatewayConnection, OnGatewayDisconnect 
     try {
      
       const token = client.handshake.auth?.token || client.handshake.headers.authorization?.split(' ')[1];
-      console.log(token)
       if (!token) {
         throw new Error('Token no encontrado');
       }
@@ -86,7 +85,7 @@ export class BattlesGateway implements OnGatewayConnection, OnGatewayDisconnect 
       const roomId = `battle_${data.battleId}`;
       
       const newState = await this.battlesService.processTurn(+data.battleId, user.sub);
-
+      // console.log("Proceso ataque: "+JSON.stringify(newState));
       this.io.to(roomId).emit('battle_update', newState);
 
     }catch(error){

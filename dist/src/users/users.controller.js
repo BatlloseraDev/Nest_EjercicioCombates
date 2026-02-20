@@ -49,6 +49,10 @@ let UsersController = class UsersController {
         const userId = req.user.id;
         return this.usersService.findMyCharacters(userId);
     }
+    async findMe(req) {
+        const userId = req.user.id;
+        return this.usersService.findOne(userId);
+    }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -68,6 +72,7 @@ __decorate([
 ], UsersController.prototype, "findAll", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -108,6 +113,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "findMyCharacters", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    (0, common_1.Get)('me/profile'),
+    __param(0, (0, common_2.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "findMe", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])

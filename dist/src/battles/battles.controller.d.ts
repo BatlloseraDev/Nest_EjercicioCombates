@@ -20,11 +20,11 @@ export declare class BattlesController {
                     imageUrl: string | null;
                 };
             } & {
-                level: number;
-                experience: number;
                 id: number;
                 userId: number;
                 characterId: number;
+                level: number;
+                experience: number;
                 currentHp: number;
             };
         } & {
@@ -34,10 +34,10 @@ export declare class BattlesController {
             battleId: number;
         })[];
     } & {
-        createdAt: Date;
         id: number;
         status: import("../../generated/prisma/enums").BattleStatus;
         winnerId: number | null;
+        createdAt: Date;
         finishedAt: Date | null;
     }>;
     join(req: any, id: string, body: {
@@ -57,10 +57,10 @@ export declare class BattlesController {
             battleId: number;
         })[];
     } & {
-        createdAt: Date;
         id: number;
         status: import("../../generated/prisma/enums").BattleStatus;
         winnerId: number | null;
+        createdAt: Date;
         finishedAt: Date | null;
     })[]>;
     findAll(req: any): Promise<({
@@ -71,10 +71,10 @@ export declare class BattlesController {
             battleId: number;
         }[];
     } & {
-        createdAt: Date;
         id: number;
         status: import("../../generated/prisma/enums").BattleStatus;
         winnerId: number | null;
+        createdAt: Date;
         finishedAt: Date | null;
     })[]>;
     findOne(id: string): Promise<({
@@ -90,11 +90,11 @@ export declare class BattlesController {
                     imageUrl: string | null;
                 };
             } & {
-                level: number;
-                experience: number;
                 id: number;
                 userId: number;
                 characterId: number;
+                level: number;
+                experience: number;
                 currentHp: number;
             };
         } & {
@@ -104,10 +104,10 @@ export declare class BattlesController {
             battleId: number;
         })[];
     } & {
-        createdAt: Date;
         id: number;
         status: import("../../generated/prisma/enums").BattleStatus;
         winnerId: number | null;
+        createdAt: Date;
         finishedAt: Date | null;
     }) | null>;
     update(id: string, updateBattleDto: UpdateBattleDto): Promise<string>;

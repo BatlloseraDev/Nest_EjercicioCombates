@@ -56,4 +56,5 @@ export declare class UsersController {
         characterId: number;
         currentHp: number;
     })[]>;
+    findMe(req: any): Promise<any>;
 }

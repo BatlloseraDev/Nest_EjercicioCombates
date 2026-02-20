@@ -181,7 +181,7 @@
             <div id="character-shop" class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
             </div>
         </div>
-   
+
 
         <h2>Jugar</h2>
         <div class="card">
@@ -340,9 +340,9 @@
             try {
                 // Obtenemos todos los personajes (el endpoint findAll que ya tienes)
                 const characters = await apiCall('/characters');
-                console.log("Los cahracteres son: "+ characters)
+             
                 const container = document.getElementById('character-shop');
-                
+
                 if (characters.length === 0) {
                     container.innerHTML = '<p>El administrador aún no ha creado personajes.</p>';
                     return;
@@ -365,20 +365,33 @@
             try {
                 await apiCall(`/users/me/characters/${characterId}`, 'POST');
                 alert('¡Personaje reclutado con éxito!');
-                
+
                 // Recargamos el inventario del usuario para que aparezca en el select de "Jugar"
-                fetchUserCharacters(); 
+                fetchUserCharacters();
             } catch (error) {
                 // Aquí saltarán los errores del backend (Nivel insuficiente, ya lo tienes, etc.)
-                alert(error.message); 
+                alert(error.message);
             }
         }
 
         async function fetchStats() {
             // Llama a tu endpoint de usuario para obtener nivel, exp, victorias...
             // Ejemplo simulado:
-            // const data = await apiCall('/users/profile');
-            // document.getElementById('stat-level').innerText = data.level;
+            const data = await apiCall('/users/me/profile');
+         
+            document.getElementById('stat-level').innerText = data.level;
+            document.getElementById('stat-xp').innerText = data.experience;
+            document.getElementById('stat-wins').innerText = data.wins;
+            document.getElementById('stat-losses').innerText = data.losses;
+            /*
+              <div class="card">
+               <h3>Tus Estadísticas</h3>
+               <p>Nivel: <strong id="stat-level">1</strong></p>
+               <p>Experiencia: <strong id="stat-xp">0</strong>/100</p>
+               <p>Victorias: <strong id="stat-wins">0</strong> | Derrotas: <strong id="stat-losses">0</strong></p>
+           </div>
+
+           */
         }
 
         async function fetchUserCharacters() {
@@ -433,9 +446,16 @@
             if (!charId) return alert("Selecciona un personaje primero");
 
             try {
-                const body = { characterId: parseInt(charId) };
+                let body = null;
+                if (isPvE) {
+                    body = { characterId: parseInt(charId) };
+                }
+                else {
+                    body = { characterId: parseInt(charId), opponentId: "anom" };
+                }
+                
                 const res = await apiCall('/battles', 'POST', body);
-            
+                console.log(res)
                 currentBattleId = res.battleId || res.id; // Depende de lo que devuelva tu API
                 enterArena(currentBattleId);
             } catch (e) { alert(e.message); }
@@ -468,7 +488,7 @@
                     //     Authorization: `Bearer ${token}`
                     // },
                     // transports: ['websocket']
-                   auth: { token: token }
+                    auth: { token: token }
                 });
 
                 socket.on('connect', () => console.log('🟢 WS Conectado'));
@@ -507,8 +527,7 @@
             if (me) renderPlayer(1, me);
             if (opponent) renderPlayer(2, opponent);
 
-            // Control del turno (Tu backend envía turnUserId o turnUserID dependiendo de cómo lo escribiste)
-            const isMyTurn = state.turnUserId === (currentUser.sub || currentUser.id);
+            const isMyTurn = state.turnUserID === (currentUser.sub || currentUser.id);
 
             const btn = document.getElementById('btn-attack');
             if (state.status === 'IN_PROGRESS') {
@@ -537,7 +556,6 @@
         }
 
         function attack() {
-            // IMPORTANTE: Tu backend espera que enviemos un JSON con { battleId: X }
             socket.emit('attack', { battleId: currentBattleId });
         }
 

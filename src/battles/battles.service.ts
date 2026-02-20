@@ -47,7 +47,6 @@ export class BattlesService {
     }
 
     const isPvE = !opponentId;
-
     const battle = await this.prisma.battle.create({
       data: {
         status: isPvE ? BattleStatus.IN_PROGRESS : BattleStatus.PENDING,
@@ -70,7 +69,6 @@ export class BattlesService {
       }
     })
     //honestamente para esto he tenido que usar IA me estaba liando mucho 
-
     return battle;
   }
 
@@ -192,7 +190,6 @@ export class BattlesService {
         avatar: '',
       });
     }// de momento lo hago generico
-
     const state: BattleState = {
       battleId,
       isPvE,
@@ -201,6 +198,7 @@ export class BattlesService {
       players,
       logs: ['La batalla ha comenzado']
     };
+    
 
     this.activeBattles.set(battleId, state);
 
@@ -224,7 +222,8 @@ export class BattlesService {
     }
 
     const damage = attacker.attack;
-    defender.currentHp -= Math.max(0, defender.currentHp - damage);
+    console.log(`El daño procesado por ${attacker.nickname} es ${damage}`);
+    defender.currentHp = Math.max(0, defender.currentHp - damage);
 
     state.logs.push(`${attacker.nickname} hizo ${damage} de daño a ${defender.nickname}`);
 
@@ -254,7 +253,7 @@ export class BattlesService {
     }
 
     const damage = cpu.attack;
-    player.currentHp -= Math.max(0, player.currentHp - damage);
+    player.currentHp = Math.max(0, player.currentHp - damage);
 
     state.logs.push(`CPU hizo ${damage} de daño a ${player.nickname}`);
     if (player.currentHp <= 0) {
@@ -290,10 +289,10 @@ export class BattlesService {
 
     for( const participant of participants){
       if(participant.userId === winnerId){
-        await this.charactersService.addExperienceToUserCharacter(participant.userCharacterId, 10);
+        await this.charactersService.addExperienceToUserCharacter(participant.userCharacterId, 25);
       }
       else if(participant.userId === loserId){
-        await this.charactersService.addExperienceToUserCharacter(participant.userCharacterId, 5);
+        await this.charactersService.addExperienceToUserCharacter(participant.userCharacterId, 10);
       }
     }
   }
