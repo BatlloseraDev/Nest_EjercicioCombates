@@ -6,7 +6,7 @@ yarn prisma migrate dev
 yarn start:dev &
 APP_PID=$!
 # Espera a que el servidor esté listo
-sleep 5
+sleep 30
 # Lanza los tests
 yarn test:e2e
 TEST_EXIT=$?
