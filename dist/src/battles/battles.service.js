@@ -138,7 +138,8 @@ let BattlesService = class BattlesService {
         if (!battleDb) {
             throw new common_1.NotFoundException('Batalla no encontrada');
         }
-        const isPvE = battleDb.participants.length === 1;
+        const isPvE = battleDb.participants.length === 1 && battleDb.status !== 'PENDING';
+        ;
         const players = battleDb.participants.map(p => ({
             userId: p.userId,
             nickname: p.user.nickname,
@@ -162,12 +163,15 @@ let BattlesService = class BattlesService {
         const state = {
             battleId,
             isPvE,
-            status: 'IN_PROGRESS',
+            status: battleDb.status === 'PENDING' ? 'PENDING' : 'IN_PROGRESS',
             turnUserID: players[0].userId,
             players,
             logs: ['La batalla ha comenzado']
         };
-        this.activeBattles.set(battleId, state);
+        if (isPvE || players.length === 2) {
+            state.status = 'IN_PROGRESS';
+            this.activeBattles.set(battleId, state);
+        }
         return state;
     }
     async processTurn(battleId, userId) {

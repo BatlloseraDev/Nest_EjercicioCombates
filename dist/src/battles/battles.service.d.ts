@@ -7,7 +7,7 @@ import { CharactersService } from 'src/characters/characters.service';
 interface BattleState {
     battleId: number;
     isPvE: boolean;
-    status: 'IN_PROGRESS' | 'FINISHED';
+    status: 'PENDING' | 'IN_PROGRESS' | 'FINISHED';
     turnUserID: number;
     players: {
         userId: number;
@@ -137,7 +137,7 @@ export declare class BattlesService {
         winner: string;
         battleId: number;
         isPvE: boolean;
-        status: "IN_PROGRESS" | "FINISHED";
+        status: "PENDING" | "IN_PROGRESS" | "FINISHED";
         turnUserID: number;
         players: {
             userId: number;
@@ -154,7 +154,7 @@ export declare class BattlesService {
         winner: string;
         battleId: number;
         isPvE: boolean;
-        status: "IN_PROGRESS" | "FINISHED";
+        status: "PENDING" | "IN_PROGRESS" | "FINISHED";
         turnUserID: number;
         players: {
             userId: number;

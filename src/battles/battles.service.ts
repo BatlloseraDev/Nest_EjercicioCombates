@@ -9,7 +9,7 @@ import { CharactersService } from 'src/characters/characters.service';
 interface BattleState {
   battleId: number;
   isPvE: boolean;
-  status: 'IN_PROGRESS' | 'FINISHED';
+  status: 'PENDING' | 'IN_PROGRESS' | 'FINISHED';
   turnUserID: number;
   players: {
     userId: number;
@@ -166,7 +166,7 @@ export class BattlesService {
       throw new NotFoundException('Batalla no encontrada');
     }
 
-    const isPvE = battleDb.participants.length === 1;
+    const isPvE = battleDb.participants.length === 1 && battleDb.status !== 'PENDING';;
 
     const players = battleDb.participants.map(p => ({
       userId: p.userId,
@@ -193,14 +193,16 @@ export class BattlesService {
     const state: BattleState = {
       battleId,
       isPvE,
-      status: 'IN_PROGRESS',
+      status: battleDb.status === 'PENDING' ? 'PENDING' : 'IN_PROGRESS',
       turnUserID: players[0].userId,//luego cambiarlo a random
       players,
       logs: ['La batalla ha comenzado']
     };
-    
 
-    this.activeBattles.set(battleId, state);
+    if (isPvE || players.length === 2) {
+      state.status = 'IN_PROGRESS';
+      this.activeBattles.set(battleId, state);
+    }
 
     return state;
   }
@@ -257,11 +259,11 @@ export class BattlesService {
 
     state.logs.push(`CPU hizo ${damage} de daño a ${player.nickname}`);
     if (player.currentHp <= 0) {
-        state.status = 'FINISHED';
-        state.logs.push(`¡La CPU ha ganado!`);
-        await this.finishBattle(battleId, null, player.userId); // Null porque ganó la CPU
-        this.activeBattles.delete(battleId);
-        return { ...state, winner: 'CPU' };
+      state.status = 'FINISHED';
+      state.logs.push(`¡La CPU ha ganado!`);
+      await this.finishBattle(battleId, null, player.userId); // Null porque ganó la CPU
+      this.activeBattles.delete(battleId);
+      return { ...state, winner: 'CPU' };
     }
 
     state.turnUserID = player.userId;// devuelve el turno al jugador
@@ -284,14 +286,14 @@ export class BattlesService {
     if (loserId && loserId !== -1) await this.usersService.registerBattleLoss(loserId);
 
     const participants = await this.prisma.battleParticipant.findMany({
-      where: {battleId: battleId}
+      where: { battleId: battleId }
     });
 
-    for( const participant of participants){
-      if(participant.userId === winnerId){
+    for (const participant of participants) {
+      if (participant.userId === winnerId) {
         await this.charactersService.addExperienceToUserCharacter(participant.userCharacterId, 25);
       }
-      else if(participant.userId === loserId){
+      else if (participant.userId === loserId) {
         await this.charactersService.addExperienceToUserCharacter(participant.userCharacterId, 10);
       }
     }

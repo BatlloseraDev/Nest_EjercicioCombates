@@ -26,6 +26,7 @@ let CharactersController = class CharactersController {
         this.charactersService = charactersService;
     }
     create(createCharacterDto) {
+        console.log(createCharacterDto);
         return this.charactersService.create(createCharacterDto);
     }
     findAll() {

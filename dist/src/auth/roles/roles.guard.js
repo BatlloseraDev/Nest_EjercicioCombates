@@ -27,7 +27,12 @@ let RolesGuard = class RolesGuard {
         if (!user || !user.roles || user.roles.length === 0) {
             return false;
         }
-        const hasRole = user.roles.some((userRole) => requiredRoles.includes(userRole.role));
+        const hasRole = user.roles.some((userRole) => {
+            if (typeof userRole === 'string') {
+                return requiredRoles.includes(userRole);
+            }
+            return requiredRoles.includes(userRole.role) || requiredRoles.includes(userRole.name);
+        });
         return hasRole;
     }
 };

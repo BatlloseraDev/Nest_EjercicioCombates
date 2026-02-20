@@ -15,6 +15,7 @@ export class CharactersController {
   @Roles('ADMIN')
   @Post()
   create(@Body() createCharacterDto: CreateCharacterDto) {
+    console.log(createCharacterDto);
     return this.charactersService.create(createCharacterDto);
   }
 

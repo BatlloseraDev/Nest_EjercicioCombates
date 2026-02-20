@@ -49,24 +49,17 @@ let BattlesGateway = class BattlesGateway {
     }
     async handleJoinBattle(client, data) {
         try {
-            const user = client.data.user;
             const roomId = `battle_${data.battleId}`;
             await client.join(roomId);
             const battleState = await this.battlesService.initializeBattleState(+data.battleId);
             if (!battleState) {
                 throw new Error('Batalla no encontrada');
             }
-            if (battleState.isPvE) {
-                this.io.to(roomId).emit('battle_update', battleState);
+            if (battleState.status === 'PENDING') {
+                client.emit('battle_wait', { message: 'Esperando a que entre un oponente...' });
             }
             else {
-                const sockets = await this.io.in(roomId).fetchSockets();
-                if (sockets.length == 2) {
-                    this.io.to(roomId).emit('battle_update', battleState);
-                }
-                else {
-                    client.emit('battle_wait', { message: 'Esperando a que entre un oponente' });
-                }
+                this.io.to(roomId).emit('battle_update', battleState);
             }
         }
         catch (error) {

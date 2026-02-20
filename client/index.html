@@ -171,6 +171,8 @@
                 <div style="display: flex; gap: 10px;">
                     <input type="number" id="char-hp" placeholder="HP Base">
                     <input type="number" id="char-atk" placeholder="Ataque Base">
+                    <input type="number" id="char-minLevel" placeholder="Nivel Mínimo">
+                    <input type="number" id="char-special" placeholder="Poder Especial (1-10)">
                 </div>
                 <button onclick="createCharacter()">Crear Personaje</button>
             </div>
@@ -383,26 +385,14 @@
             document.getElementById('stat-xp').innerText = data.experience;
             document.getElementById('stat-wins').innerText = data.wins;
             document.getElementById('stat-losses').innerText = data.losses;
-            /*
-              <div class="card">
-               <h3>Tus Estadísticas</h3>
-               <p>Nivel: <strong id="stat-level">1</strong></p>
-               <p>Experiencia: <strong id="stat-xp">0</strong>/100</p>
-               <p>Victorias: <strong id="stat-wins">0</strong> | Derrotas: <strong id="stat-losses">0</strong></p>
-           </div>
 
-           */
         }
 
         async function fetchUserCharacters() {
             // Llama al endpoint que devuelve el inventario de personajes del usuario
             // Simulamos que devuelve un array de { id (userCharacterId), character: { name } }
             try {
-                // Cambia esto por tu endpoint real:
-                // const chars = await apiCall('/users/my-characters'); 
 
-                // MOCK PARA PRUEBAS UI:
-                // const chars = [{ id: 1, character: { name: 'Guerrero' } }];
                 const chars = await apiCall('/users/me/characters')
                 const select = document.getElementById('my-characters');
                 select.innerHTML = chars.map(c => `<option value="${c.id}">${c.character.name} (Lvl ${c.level || 1})</option>`).join('');
@@ -412,13 +402,18 @@
         // --- ADMIN ---
         async function createCharacter() {
             try {
-                await apiCall('/characters', 'POST', {
+                data = {
                     name: document.getElementById('char-name').value,
                     baseHp: parseInt(document.getElementById('char-hp').value),
-                    baseAttack: parseInt(document.getElementById('char-atk').value)
-                });
+                    baseAttack: parseInt(document.getElementById('char-atk').value),
+                    special: (Math.random() * (parseInt(document.getElementById('char-special').value) - 1)) + 1,
+                    minLevel: parseInt(document.getElementById('char-minLevel').value),
+                    imageUrl: '#'
+                }
+                console.log(data);
+                await apiCall('/characters', 'POST', data);
                 alert('Personaje creado!');
-            } catch (e) { alert(e.message); }
+            } catch (e) { alert(e); }
         }
 
         // --- SALAS Y MATCHMAKING ---
@@ -482,7 +477,7 @@
 
             // Conectar Socket
             if (!socket) {
-                // Enviamos el token en los extraHeaders (funciona bien con el polling de Socket.io)
+                
                 socket = io(SOCKET_URL, {
                     // extraHeaders: {
                     //     Authorization: `Bearer ${token}`
