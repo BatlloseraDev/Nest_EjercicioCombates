@@ -31,7 +31,6 @@ export declare class AuthService {
             experience: number;
             userId: number;
             characterId: number;
-            currentHp: number;
         })[];
         battlesWon: {
             id: number;

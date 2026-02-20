@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: ejercicio2-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: ejercicio2
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: ejercicio2-app
+    command: sh -c "yarn prisma generate && yarn start:dev"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://postgres:admin@db:5432/ejercicio2?schema=public
+    depends_on:
+      - db
+
+volumes:
+  db_data:

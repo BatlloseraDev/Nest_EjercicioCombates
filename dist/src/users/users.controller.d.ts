@@ -10,33 +10,22 @@ export declare class UsersController {
     update(id: string, updateUserDto: UpdateUserDto): Promise<any>;
     remove(id: string): Promise<{
         email: string;
-        password: string;
         nickname: string;
+        password: string;
+        id: number;
         level: number;
         experience: number;
         wins: number;
         losses: number;
         createdAt: Date;
         updatedAt: Date;
-        id: number;
     }>;
     assignCharacterToMe(req: any, characterId: string): Promise<{
-        character: {
-            id: number;
-            name: string;
-            baseHp: number;
-            baseAttack: number;
-            minLevel: number;
-            special: number;
-            imageUrl: string | null;
-        };
-    } & {
+        id: number;
         level: number;
         experience: number;
-        id: number;
         userId: number;
         characterId: number;
-        currentHp: number;
     }>;
     findMyCharacters(req: any): Promise<({
         character: {
@@ -49,12 +38,11 @@ export declare class UsersController {
             imageUrl: string | null;
         };
     } & {
+        id: number;
         level: number;
         experience: number;
-        id: number;
         userId: number;
         characterId: number;
-        currentHp: number;
     })[]>;
     findMe(req: any): Promise<any>;
 }

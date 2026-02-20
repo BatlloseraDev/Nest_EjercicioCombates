@@ -94,8 +94,7 @@ exports.UserCharacterScalarFieldEnum = {
     userId: 'userId',
     characterId: 'characterId',
     level: 'level',
-    experience: 'experience',
-    currentHp: 'currentHp'
+    experience: 'experience'
 };
 exports.BattleScalarFieldEnum = {
     id: 'id',

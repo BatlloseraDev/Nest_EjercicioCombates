@@ -67,7 +67,6 @@ export declare const UserCharacterScalarFieldEnum: {
     readonly characterId: "characterId";
     readonly level: "level";
     readonly experience: "experience";
-    readonly currentHp: "currentHp";
 };
 export type UserCharacterScalarFieldEnum = (typeof UserCharacterScalarFieldEnum)[keyof typeof UserCharacterScalarFieldEnum];
 export declare const BattleScalarFieldEnum: {

@@ -14,7 +14,6 @@ export type UserCharacterAvgAggregateOutputType = {
     characterId: number | null;
     level: number | null;
     experience: number | null;
-    currentHp: number | null;
 };
 export type UserCharacterSumAggregateOutputType = {
     id: number | null;
@@ -22,7 +21,6 @@ export type UserCharacterSumAggregateOutputType = {
     characterId: number | null;
     level: number | null;
     experience: number | null;
-    currentHp: number | null;
 };
 export type UserCharacterMinAggregateOutputType = {
     id: number | null;
@@ -30,7 +28,6 @@ export type UserCharacterMinAggregateOutputType = {
     characterId: number | null;
     level: number | null;
     experience: number | null;
-    currentHp: number | null;
 };
 export type UserCharacterMaxAggregateOutputType = {
     id: number | null;
@@ -38,7 +35,6 @@ export type UserCharacterMaxAggregateOutputType = {
     characterId: number | null;
     level: number | null;
     experience: number | null;
-    currentHp: number | null;
 };
 export type UserCharacterCountAggregateOutputType = {
     id: number;
@@ -46,7 +42,6 @@ export type UserCharacterCountAggregateOutputType = {
     characterId: number;
     level: number;
     experience: number;
-    currentHp: number;
     _all: number;
 };
 export type UserCharacterAvgAggregateInputType = {
@@ -55,7 +50,6 @@ export type UserCharacterAvgAggregateInputType = {
     characterId?: true;
     level?: true;
     experience?: true;
-    currentHp?: true;
 };
 export type UserCharacterSumAggregateInputType = {
     id?: true;
@@ -63,7 +57,6 @@ export type UserCharacterSumAggregateInputType = {
     characterId?: true;
     level?: true;
     experience?: true;
-    currentHp?: true;
 };
 export type UserCharacterMinAggregateInputType = {
     id?: true;
@@ -71,7 +64,6 @@ export type UserCharacterMinAggregateInputType = {
     characterId?: true;
     level?: true;
     experience?: true;
-    currentHp?: true;
 };
 export type UserCharacterMaxAggregateInputType = {
     id?: true;
@@ -79,7 +71,6 @@ export type UserCharacterMaxAggregateInputType = {
     characterId?: true;
     level?: true;
     experience?: true;
-    currentHp?: true;
 };
 export type UserCharacterCountAggregateInputType = {
     id?: true;
@@ -87,7 +78,6 @@ export type UserCharacterCountAggregateInputType = {
     characterId?: true;
     level?: true;
     experience?: true;
-    currentHp?: true;
     _all?: true;
 };
 export type UserCharacterAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -124,7 +114,6 @@ export type UserCharacterGroupByOutputType = {
     characterId: number;
     level: number;
     experience: number;
-    currentHp: number;
     _count: UserCharacterCountAggregateOutputType | null;
     _avg: UserCharacterAvgAggregateOutputType | null;
     _sum: UserCharacterSumAggregateOutputType | null;
@@ -143,7 +132,6 @@ export type UserCharacterWhereInput = {
     characterId?: Prisma.IntFilter<"UserCharacter"> | number;
     level?: Prisma.IntFilter<"UserCharacter"> | number;
     experience?: Prisma.IntFilter<"UserCharacter"> | number;
-    currentHp?: Prisma.IntFilter<"UserCharacter"> | number;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     character?: Prisma.XOR<Prisma.CharacterScalarRelationFilter, Prisma.CharacterWhereInput>;
     battles?: Prisma.BattleParticipantListRelationFilter;
@@ -154,7 +142,6 @@ export type UserCharacterOrderByWithRelationInput = {
     characterId?: Prisma.SortOrder;
     level?: Prisma.SortOrder;
     experience?: Prisma.SortOrder;
-    currentHp?: Prisma.SortOrder;
     user?: Prisma.UserOrderByWithRelationInput;
     character?: Prisma.CharacterOrderByWithRelationInput;
     battles?: Prisma.BattleParticipantOrderByRelationAggregateInput;
@@ -168,7 +155,6 @@ export type UserCharacterWhereUniqueInput = Prisma.AtLeast<{
     characterId?: Prisma.IntFilter<"UserCharacter"> | number;
     level?: Prisma.IntFilter<"UserCharacter"> | number;
     experience?: Prisma.IntFilter<"UserCharacter"> | number;
-    currentHp?: Prisma.IntFilter<"UserCharacter"> | number;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     character?: Prisma.XOR<Prisma.CharacterScalarRelationFilter, Prisma.CharacterWhereInput>;
     battles?: Prisma.BattleParticipantListRelationFilter;
@@ -179,7 +165,6 @@ export type UserCharacterOrderByWithAggregationInput = {
     characterId?: Prisma.SortOrder;
     level?: Prisma.SortOrder;
     experience?: Prisma.SortOrder;
-    currentHp?: Prisma.SortOrder;
     _count?: Prisma.UserCharacterCountOrderByAggregateInput;
     _avg?: Prisma.UserCharacterAvgOrderByAggregateInput;
     _max?: Prisma.UserCharacterMaxOrderByAggregateInput;
@@ -195,12 +180,10 @@ export type UserCharacterScalarWhereWithAggregatesInput = {
     characterId?: Prisma.IntWithAggregatesFilter<"UserCharacter"> | number;
     level?: Prisma.IntWithAggregatesFilter<"UserCharacter"> | number;
     experience?: Prisma.IntWithAggregatesFilter<"UserCharacter"> | number;
-    currentHp?: Prisma.IntWithAggregatesFilter<"UserCharacter"> | number;
 };
 export type UserCharacterCreateInput = {
     level?: number;
     experience?: number;
-    currentHp: number;
     user: Prisma.UserCreateNestedOneWithoutCharactersInput;
     character: Prisma.CharacterCreateNestedOneWithoutInstancesInput;
     battles?: Prisma.BattleParticipantCreateNestedManyWithoutCharacterUsedInput;
@@ -211,13 +194,11 @@ export type UserCharacterUncheckedCreateInput = {
     characterId: number;
     level?: number;
     experience?: number;
-    currentHp: number;
     battles?: Prisma.BattleParticipantUncheckedCreateNestedManyWithoutCharacterUsedInput;
 };
 export type UserCharacterUpdateInput = {
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
     user?: Prisma.UserUpdateOneRequiredWithoutCharactersNestedInput;
     character?: Prisma.CharacterUpdateOneRequiredWithoutInstancesNestedInput;
     battles?: Prisma.BattleParticipantUpdateManyWithoutCharacterUsedNestedInput;
@@ -228,7 +209,6 @@ export type UserCharacterUncheckedUpdateInput = {
     characterId?: Prisma.IntFieldUpdateOperationsInput | number;
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
     battles?: Prisma.BattleParticipantUncheckedUpdateManyWithoutCharacterUsedNestedInput;
 };
 export type UserCharacterCreateManyInput = {
@@ -237,12 +217,10 @@ export type UserCharacterCreateManyInput = {
     characterId: number;
     level?: number;
     experience?: number;
-    currentHp: number;
 };
 export type UserCharacterUpdateManyMutationInput = {
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type UserCharacterUncheckedUpdateManyInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -250,7 +228,6 @@ export type UserCharacterUncheckedUpdateManyInput = {
     characterId?: Prisma.IntFieldUpdateOperationsInput | number;
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type UserCharacterListRelationFilter = {
     every?: Prisma.UserCharacterWhereInput;
@@ -266,7 +243,6 @@ export type UserCharacterCountOrderByAggregateInput = {
     characterId?: Prisma.SortOrder;
     level?: Prisma.SortOrder;
     experience?: Prisma.SortOrder;
-    currentHp?: Prisma.SortOrder;
 };
 export type UserCharacterAvgOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -274,7 +250,6 @@ export type UserCharacterAvgOrderByAggregateInput = {
     characterId?: Prisma.SortOrder;
     level?: Prisma.SortOrder;
     experience?: Prisma.SortOrder;
-    currentHp?: Prisma.SortOrder;
 };
 export type UserCharacterMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -282,7 +257,6 @@ export type UserCharacterMaxOrderByAggregateInput = {
     characterId?: Prisma.SortOrder;
     level?: Prisma.SortOrder;
     experience?: Prisma.SortOrder;
-    currentHp?: Prisma.SortOrder;
 };
 export type UserCharacterMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -290,7 +264,6 @@ export type UserCharacterMinOrderByAggregateInput = {
     characterId?: Prisma.SortOrder;
     level?: Prisma.SortOrder;
     experience?: Prisma.SortOrder;
-    currentHp?: Prisma.SortOrder;
 };
 export type UserCharacterSumOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -298,7 +271,6 @@ export type UserCharacterSumOrderByAggregateInput = {
     characterId?: Prisma.SortOrder;
     level?: Prisma.SortOrder;
     experience?: Prisma.SortOrder;
-    currentHp?: Prisma.SortOrder;
 };
 export type UserCharacterScalarRelationFilter = {
     is?: Prisma.UserCharacterWhereInput;
@@ -395,7 +367,6 @@ export type UserCharacterUpdateOneRequiredWithoutBattlesNestedInput = {
 export type UserCharacterCreateWithoutUserInput = {
     level?: number;
     experience?: number;
-    currentHp: number;
     character: Prisma.CharacterCreateNestedOneWithoutInstancesInput;
     battles?: Prisma.BattleParticipantCreateNestedManyWithoutCharacterUsedInput;
 };
@@ -404,7 +375,6 @@ export type UserCharacterUncheckedCreateWithoutUserInput = {
     characterId: number;
     level?: number;
     experience?: number;
-    currentHp: number;
     battles?: Prisma.BattleParticipantUncheckedCreateNestedManyWithoutCharacterUsedInput;
 };
 export type UserCharacterCreateOrConnectWithoutUserInput = {
@@ -437,12 +407,10 @@ export type UserCharacterScalarWhereInput = {
     characterId?: Prisma.IntFilter<"UserCharacter"> | number;
     level?: Prisma.IntFilter<"UserCharacter"> | number;
     experience?: Prisma.IntFilter<"UserCharacter"> | number;
-    currentHp?: Prisma.IntFilter<"UserCharacter"> | number;
 };
 export type UserCharacterCreateWithoutCharacterInput = {
     level?: number;
     experience?: number;
-    currentHp: number;
     user: Prisma.UserCreateNestedOneWithoutCharactersInput;
     battles?: Prisma.BattleParticipantCreateNestedManyWithoutCharacterUsedInput;
 };
@@ -451,7 +419,6 @@ export type UserCharacterUncheckedCreateWithoutCharacterInput = {
     userId: number;
     level?: number;
     experience?: number;
-    currentHp: number;
     battles?: Prisma.BattleParticipantUncheckedCreateNestedManyWithoutCharacterUsedInput;
 };
 export type UserCharacterCreateOrConnectWithoutCharacterInput = {
@@ -478,7 +445,6 @@ export type UserCharacterUpdateManyWithWhereWithoutCharacterInput = {
 export type UserCharacterCreateWithoutBattlesInput = {
     level?: number;
     experience?: number;
-    currentHp: number;
     user: Prisma.UserCreateNestedOneWithoutCharactersInput;
     character: Prisma.CharacterCreateNestedOneWithoutInstancesInput;
 };
@@ -488,7 +454,6 @@ export type UserCharacterUncheckedCreateWithoutBattlesInput = {
     characterId: number;
     level?: number;
     experience?: number;
-    currentHp: number;
 };
 export type UserCharacterCreateOrConnectWithoutBattlesInput = {
     where: Prisma.UserCharacterWhereUniqueInput;
@@ -506,7 +471,6 @@ export type UserCharacterUpdateToOneWithWhereWithoutBattlesInput = {
 export type UserCharacterUpdateWithoutBattlesInput = {
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
     user?: Prisma.UserUpdateOneRequiredWithoutCharactersNestedInput;
     character?: Prisma.CharacterUpdateOneRequiredWithoutInstancesNestedInput;
 };
@@ -516,19 +480,16 @@ export type UserCharacterUncheckedUpdateWithoutBattlesInput = {
     characterId?: Prisma.IntFieldUpdateOperationsInput | number;
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type UserCharacterCreateManyUserInput = {
     id?: number;
     characterId: number;
     level?: number;
     experience?: number;
-    currentHp: number;
 };
 export type UserCharacterUpdateWithoutUserInput = {
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
     character?: Prisma.CharacterUpdateOneRequiredWithoutInstancesNestedInput;
     battles?: Prisma.BattleParticipantUpdateManyWithoutCharacterUsedNestedInput;
 };
@@ -537,7 +498,6 @@ export type UserCharacterUncheckedUpdateWithoutUserInput = {
     characterId?: Prisma.IntFieldUpdateOperationsInput | number;
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
     battles?: Prisma.BattleParticipantUncheckedUpdateManyWithoutCharacterUsedNestedInput;
 };
 export type UserCharacterUncheckedUpdateManyWithoutUserInput = {
@@ -545,19 +505,16 @@ export type UserCharacterUncheckedUpdateManyWithoutUserInput = {
     characterId?: Prisma.IntFieldUpdateOperationsInput | number;
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type UserCharacterCreateManyCharacterInput = {
     id?: number;
     userId: number;
     level?: number;
     experience?: number;
-    currentHp: number;
 };
 export type UserCharacterUpdateWithoutCharacterInput = {
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
     user?: Prisma.UserUpdateOneRequiredWithoutCharactersNestedInput;
     battles?: Prisma.BattleParticipantUpdateManyWithoutCharacterUsedNestedInput;
 };
@@ -566,7 +523,6 @@ export type UserCharacterUncheckedUpdateWithoutCharacterInput = {
     userId?: Prisma.IntFieldUpdateOperationsInput | number;
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
     battles?: Prisma.BattleParticipantUncheckedUpdateManyWithoutCharacterUsedNestedInput;
 };
 export type UserCharacterUncheckedUpdateManyWithoutCharacterInput = {
@@ -574,7 +530,6 @@ export type UserCharacterUncheckedUpdateManyWithoutCharacterInput = {
     userId?: Prisma.IntFieldUpdateOperationsInput | number;
     level?: Prisma.IntFieldUpdateOperationsInput | number;
     experience?: Prisma.IntFieldUpdateOperationsInput | number;
-    currentHp?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type UserCharacterCountOutputType = {
     battles: number;
@@ -594,7 +549,6 @@ export type UserCharacterSelect<ExtArgs extends runtime.Types.Extensions.Interna
     characterId?: boolean;
     level?: boolean;
     experience?: boolean;
-    currentHp?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     character?: boolean | Prisma.CharacterDefaultArgs<ExtArgs>;
     battles?: boolean | Prisma.UserCharacter$battlesArgs<ExtArgs>;
@@ -606,7 +560,6 @@ export type UserCharacterSelectCreateManyAndReturn<ExtArgs extends runtime.Types
     characterId?: boolean;
     level?: boolean;
     experience?: boolean;
-    currentHp?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     character?: boolean | Prisma.CharacterDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["userCharacter"]>;
@@ -616,7 +569,6 @@ export type UserCharacterSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
     characterId?: boolean;
     level?: boolean;
     experience?: boolean;
-    currentHp?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     character?: boolean | Prisma.CharacterDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["userCharacter"]>;
@@ -626,9 +578,8 @@ export type UserCharacterSelectScalar = {
     characterId?: boolean;
     level?: boolean;
     experience?: boolean;
-    currentHp?: boolean;
 };
-export type UserCharacterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "characterId" | "level" | "experience" | "currentHp", ExtArgs["result"]["userCharacter"]>;
+export type UserCharacterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "characterId" | "level" | "experience", ExtArgs["result"]["userCharacter"]>;
 export type UserCharacterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     character?: boolean | Prisma.CharacterDefaultArgs<ExtArgs>;
@@ -656,7 +607,6 @@ export type $UserCharacterPayload<ExtArgs extends runtime.Types.Extensions.Inter
         characterId: number;
         level: number;
         experience: number;
-        currentHp: number;
     }, ExtArgs["result"]["userCharacter"]>;
     composites: {};
 };
@@ -722,7 +672,6 @@ export interface UserCharacterFieldRefs {
     readonly characterId: Prisma.FieldRef<"UserCharacter", 'Int'>;
     readonly level: Prisma.FieldRef<"UserCharacter", 'Int'>;
     readonly experience: Prisma.FieldRef<"UserCharacter", 'Int'>;
-    readonly currentHp: Prisma.FieldRef<"UserCharacter", 'Int'>;
 }
 export type UserCharacterFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserCharacterSelect<ExtArgs> | null;

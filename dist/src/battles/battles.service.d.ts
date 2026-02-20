@@ -43,11 +43,10 @@ export declare class BattlesService {
                 };
             } & {
                 id: number;
-                userId: number;
-                characterId: number;
                 level: number;
                 experience: number;
-                currentHp: number;
+                userId: number;
+                characterId: number;
             };
         } & {
             id: number;
@@ -57,9 +56,9 @@ export declare class BattlesService {
         })[];
     } & {
         id: number;
+        createdAt: Date;
         status: BattleStatus;
         winnerId: number | null;
-        createdAt: Date;
         finishedAt: Date | null;
     }>;
     findAllBattles(userId: number): Promise<({
@@ -71,9 +70,9 @@ export declare class BattlesService {
         }[];
     } & {
         id: number;
+        createdAt: Date;
         status: BattleStatus;
         winnerId: number | null;
-        createdAt: Date;
         finishedAt: Date | null;
     })[]>;
     findOne(id: number): Promise<({
@@ -90,11 +89,10 @@ export declare class BattlesService {
                 };
             } & {
                 id: number;
-                userId: number;
-                characterId: number;
                 level: number;
                 experience: number;
-                currentHp: number;
+                userId: number;
+                characterId: number;
             };
         } & {
             id: number;
@@ -104,9 +102,9 @@ export declare class BattlesService {
         })[];
     } & {
         id: number;
+        createdAt: Date;
         status: BattleStatus;
         winnerId: number | null;
-        createdAt: Date;
         finishedAt: Date | null;
     }) | null>;
     update(id: number, updateBattleDto: UpdateBattleDto): Promise<string>;
@@ -127,9 +125,9 @@ export declare class BattlesService {
         })[];
     } & {
         id: number;
+        createdAt: Date;
         status: BattleStatus;
         winnerId: number | null;
-        createdAt: Date;
         finishedAt: Date | null;
     })[]>;
     initializeBattleState(battleId: number): Promise<BattleState | undefined>;

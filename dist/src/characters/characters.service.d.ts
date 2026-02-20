@@ -55,6 +55,5 @@ export declare class CharactersService {
         experience: number;
         userId: number;
         characterId: number;
-        currentHp: number;
     }>;
 }

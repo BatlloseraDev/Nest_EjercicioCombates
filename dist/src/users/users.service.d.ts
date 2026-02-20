@@ -47,7 +47,6 @@ export declare class UsersService {
             experience: number;
             userId: number;
             characterId: number;
-            currentHp: number;
         })[];
         battlesWon: {
             id: number;
@@ -69,22 +68,11 @@ export declare class UsersService {
         updatedAt: Date;
     }) | null>;
     assignCharacter(userId: number, characterId: number): Promise<{
-        character: {
-            id: number;
-            name: string;
-            baseHp: number;
-            baseAttack: number;
-            minLevel: number;
-            special: number;
-            imageUrl: string | null;
-        };
-    } & {
         id: number;
         level: number;
         experience: number;
         userId: number;
         characterId: number;
-        currentHp: number;
     }>;
     findMyCharacters(userId: number): Promise<({
         character: {
@@ -102,7 +90,6 @@ export declare class UsersService {
         experience: number;
         userId: number;
         characterId: number;
-        currentHp: number;
     })[]>;
     registerBattleWin(userId: number, xpGained: number): Promise<{
         email: string;
