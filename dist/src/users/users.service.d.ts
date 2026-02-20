@@ -68,6 +68,16 @@ export declare class UsersService {
         updatedAt: Date;
     }) | null>;
     assignCharacter(userId: number, characterId: number): Promise<{
+        character: {
+            id: number;
+            name: string;
+            baseHp: number;
+            baseAttack: number;
+            minLevel: number;
+            special: number;
+            imageUrl: string | null;
+        };
+    } & {
         id: number;
         level: number;
         experience: number;

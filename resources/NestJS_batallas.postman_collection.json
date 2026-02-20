@@ -1,0 +1,279 @@
+{
+  "info": {
+    "_postman_id": "cc545993-c29d-4cac-ae04-f0cf3aeab7d4",
+    "name": "NestJS_batallas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48599462"
+  },
+  "item": [
+    {
+      "name": "login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"user123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3001/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "assignCharacter",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJzdWIiOjIsInJvbGVzIjpbIlVTRVIiXSwibmlja25hbWUiOiJ1c2VyMSIsImlhdCI6MTc3MTQ0MTc3MiwiZXhwIjoxNzcxNDQ1MzcyfQ.1lAm1Vjoxl0Dl54ddv-p-0FIWIFTvCAbSkPfZXxixKQ",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:3001/api/users/me/characters/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "users",
+            "me",
+            "characters",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getMyCharacters",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwic3ViIjoxLCJyb2xlcyI6WyJBRE1JTiJdLCJuaWNrbmFtZSI6ImFkbWluMSIsImlhdCI6MTc3MTQ0MDc3MSwiZXhwIjoxNzcxNDQ0MzcxfQ.S1r5XIim6X_mp1TiPywygfnIs8vr1sgrd3jUZHPDpnU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/api/users/me/characters",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "users",
+            "me",
+            "characters"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createBattlePvE",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwic3ViIjoxLCJyb2xlcyI6WyJBRE1JTiJdLCJuaWNrbmFtZSI6ImFkbWluMSIsImlhdCI6MTc3MTQ0MDc3MSwiZXhwIjoxNzcxNDQ0MzcxfQ.S1r5XIim6X_mp1TiPywygfnIs8vr1sgrd3jUZHPDpnU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"characterId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3001/api/battles",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "battles"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createBattlePvP",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwic3ViIjoxLCJyb2xlcyI6WyJBRE1JTiJdLCJuaWNrbmFtZSI6ImFkbWluMSIsImlhdCI6MTc3MTQ0MDc3MSwiZXhwIjoxNzcxNDQ0MzcxfQ.S1r5XIim6X_mp1TiPywygfnIs8vr1sgrd3jUZHPDpnU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"characterId\": 1,\r\n    \"opponentId\": \"opcional\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3001/api/battles",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "battles"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAvailableBattles",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwic3ViIjoxLCJyb2xlcyI6WyJBRE1JTiJdLCJuaWNrbmFtZSI6ImFkbWluMSIsImlhdCI6MTc3MTQ0MDc3MSwiZXhwIjoxNzcxNDQ0MzcxfQ.S1r5XIim6X_mp1TiPywygfnIs8vr1sgrd3jUZHPDpnU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3001/api/battles/pending",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "battles",
+            "pending"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "joinBattle",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJzdWIiOjIsInJvbGVzIjpbIlVTRVIiXSwibmlja25hbWUiOiJ1c2VyMSIsImlhdCI6MTc3MTQ0MTc3MiwiZXhwIjoxNzcxNDQ1MzcyfQ.1lAm1Vjoxl0Dl54ddv-p-0FIWIFTvCAbSkPfZXxixKQ",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"characterId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3001/api/battles/4/join",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "battles",
+            "4",
+            "join"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getCharacters",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}

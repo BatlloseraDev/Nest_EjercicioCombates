@@ -21,6 +21,16 @@ export declare class UsersController {
         updatedAt: Date;
     }>;
     assignCharacterToMe(req: any, characterId: string): Promise<{
+        character: {
+            id: number;
+            name: string;
+            baseHp: number;
+            baseAttack: number;
+            minLevel: number;
+            special: number;
+            imageUrl: string | null;
+        };
+    } & {
         id: number;
         level: number;
         experience: number;
